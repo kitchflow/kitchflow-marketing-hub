@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "features": "Features",
+    "blog": "Blog",
+    "contact": "Contact",
+    "download": "Download App"
+  },
+  "hero": {
+    "badge": "Coming soon to App Store & Google Play",
+    "title": "Run Your Kitchen. Not Just Your Menu.",
+    "subtitle": "KitchFlow gives restaurant managers and kitchen teams one powerful app to manage inventory, staff, tasks, waste, and suppliers — all in one place.",
+    "ctaPrimary": "Join the Waitlist",
+    "ctaSecondary": "See How It Works",
+    "social": "Be the first to know"
+  },
+  "problem": {
+    "label": "The Problem",
+    "title": "Running a kitchen is chaos. It doesn't have to be.",
+    "items": {
+      "stock": "Stock runs out unexpectedly",
+      "waste": "Waste adds up silently",
+      "staff": "Staff coordination is a mess"
+    }
+  },
+  "features": {
+    "label": "Features",
+    "title": "Everything your kitchen needs. Nothing it doesn't.",
+    "list": {
+      "inventory": { "title": "Smart Inventory", "desc": "QR scan, low-stock alerts" },
+      "waste": { "title": "Waste Management", "desc": "Log, track, analyse waste costs" },
+      "tasks": { "title": "Task Management", "desc": "Assign, track, accountability" },
+      "supplier": { "title": "Supplier & Shopping Lists", "desc": "Auto-builds from stock" },
+      "staff": { "title": "Staff & Scheduling", "desc": "Invite by code, manage shifts" },
+      "logs": { "title": "Activity Logs", "desc": "Full audit trail, total transparency" }
+    }
+  },
+  "how": {
+    "title": "Up and running in minutes",
+    "steps": {
+      "one": "Create your kitchen",
+      "two": "Add your inventory",
+      "three": "Run smarter operations"
+    }
+  },
+  "screens": {
+    "title": "See KitchFlow in action",
+    "labels": { "inventory": "Inventory", "tasks": "Tasks", "waste": "Waste", "shopping": "Shopping List" }
+  },
+  "who": {
+    "title": "Built for every kitchen",
+    "items": {
+      "restaurants": "Restaurants",
+      "cafes": "Cafés",
+      "catering": "Catering",
+      "any": "Any Business"
+    }
+  },
+  "waitlist": {
+    "title": "Be the first to know when we launch",
+    "placeholder": "you@kitchen.com",
+    "cta": "Join Waitlist",
+    "success": "You're on the list! We'll be in touch.",
+    "privacy": "🔒 We respect your privacy. Unsubscribe anytime."
+  },
+  "footer": {
+    "tagline": "The all-in-one kitchen operations platform",
+    "privacy": "Privacy Policy",
+    "rights": "All rights reserved.",
+    "available": "Available soon on App Store & Google Play"
+  },
+  "blog": {
+    "title": "Kitchen Insights",
+    "subtitle": "Tips, guides, and stories for food business operators",
+    "all": "All",
+    "back": "← All Articles",
+    "related": "Related articles",
+    "share": "Share",
+    "minRead": "min read"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "We read every message. Tell us what's on your mind.",
+    "based": "Based in Stockholm, Sweden 🇸🇪",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending…",
+      "success": "Thanks! We'll get back to you within 24 hours.",
+      "error": "Something went wrong. Please try again.",
+      "subjects": {
+        "general": "General Inquiry",
+        "partnership": "Partnership",
+        "press": "Press",
+        "bug": "Bug Report",
+        "other": "Other"
+      }
+    }
+  }
+}
