@@ -34,19 +34,9 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "KitchFlow — Run Your Kitchen. Not Just Your Menu." },
-      {
-        name: "description",
-        content:
-          "KitchFlow is the all-in-one mobile app for kitchen operations: inventory, staff, tasks, waste, and suppliers.",
-      },
       { name: "author", content: "KitchFlow" },
-      { property: "og:title", content: "KitchFlow — Run Your Kitchen. Not Just Your Menu." },
-      {
-        property: "og:description",
-        content:
-          "One powerful app for restaurant managers and kitchen teams. Inventory, staff, waste, and more.",
-      },
+      { name: "robots", content: "index, follow" },
+      { property: "og:site_name", content: "KitchFlow" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@KitchFlow" },
