@@ -6,19 +6,28 @@ import { toast } from "sonner";
 import { Mail, Instagram, Linkedin, Twitter, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/KFButton";
 import { client } from "@/lib/sanity";
+import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
+
+const TITLE = "Contact Us | KitchFlow";
+const DESCRIPTION =
+  "Get in touch with the KitchFlow team. Partnerships, press, support, or general inquiries — we read every message.";
+const URL = `${SITE_URL}/contact`;
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — KitchFlow" },
-      {
-        name: "description",
-        content:
-          "Get in touch with KitchFlow. Partnerships, press, support — we read every message.",
-      },
-      { property: "og:title", content: "Contact KitchFlow" },
-      { property: "og:description", content: "Reach out to the KitchFlow team." },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: URL },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: DEFAULT_OG_IMAGE },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:image", content: DEFAULT_OG_IMAGE },
     ],
+    links: [{ rel: "canonical", href: URL }],
   }),
   component: ContactPage,
 });

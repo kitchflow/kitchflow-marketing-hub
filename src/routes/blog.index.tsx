@@ -6,22 +6,28 @@ import { allPostsQuery } from "@/lib/queries";
 import { mockPosts } from "@/lib/blog-data";
 import type { Post } from "@/types";
 import { BlogList } from "@/components/blog/BlogList";
+import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
+
+const TITLE = "Kitchen Insights | KitchFlow Blog";
+const DESCRIPTION =
+  "Tips, guides, and stories for food business operators — inventory, waste, staff, and kitchen operations.";
+const URL = `${SITE_URL}/blog`;
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog — Kitchen Insights | KitchFlow" },
-      {
-        name: "description",
-        content:
-          "Tips, guides, and stories for restaurant operators. Inventory, waste, staff, and operations.",
-      },
-      { property: "og:title", content: "Kitchen Insights — KitchFlow Blog" },
-      {
-        property: "og:description",
-        content: "Practical advice for running a tighter, smarter kitchen.",
-      },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: URL },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: DEFAULT_OG_IMAGE },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:image", content: DEFAULT_OG_IMAGE },
     ],
+    links: [{ rel: "canonical", href: URL }],
   }),
   component: BlogIndex,
 });
