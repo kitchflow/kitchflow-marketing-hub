@@ -1,4 +1,9 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Toaster } from "sonner";
+import i18n, { applyLangToDocument, type Lang } from "@/lib/i18n";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 import appCss from "../styles.css?url";
 
@@ -14,7 +19,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Go home
           </Link>
@@ -29,19 +34,30 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "KitchFlow — Run Your Kitchen. Not Just Your Menu." },
+      {
+        name: "description",
+        content:
+          "KitchFlow is the all-in-one mobile app for kitchen operations: inventory, staff, tasks, waste, and suppliers.",
+      },
+      { name: "author", content: "KitchFlow" },
+      { property: "og:title", content: "KitchFlow — Run Your Kitchen. Not Just Your Menu." },
+      {
+        property: "og:description",
+        content:
+          "One powerful app for restaurant managers and kitchen teams. Inventory, staff, waste, and more.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@KitchFlow" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap",
       },
     ],
   }),
@@ -65,5 +81,28 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  useEffect(() => {
+    applyLangToDocument((i18n.language as Lang) || "en");
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            borderRadius: "9999px",
+            border: "1px solid var(--color-border)",
+            background: "var(--color-background)",
+            color: "var(--color-foreground)",
+          },
+        }}
+      />
+    </div>
+  );
 }

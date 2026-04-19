@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "features": "Fonctionnalités",
+    "blog": "Blog",
+    "contact": "Contact",
+    "download": "Télécharger l'app"
+  },
+  "hero": {
+    "badge": "Bientôt sur App Store & Google Play",
+    "title": "Pilotez votre cuisine. Pas seulement votre menu.",
+    "subtitle": "KitchFlow offre aux gérants de restaurants et aux équipes une application puissante pour gérer stocks, équipes, tâches, déchets et fournisseurs — au même endroit.",
+    "ctaPrimary": "Rejoindre la liste d'attente",
+    "ctaSecondary": "Voir comment ça marche",
+    "social": "Soyez les premiers informés"
+  },
+  "problem": {
+    "label": "Le problème",
+    "title": "Gérer une cuisine, c'est le chaos. Ça ne devrait pas l'être.",
+    "items": {
+      "stock": "Les stocks s'épuisent sans prévenir",
+      "waste": "Le gaspillage s'accumule en silence",
+      "staff": "La coordination de l'équipe est un casse-tête"
+    }
+  },
+  "features": {
+    "label": "Fonctionnalités",
+    "title": "Tout ce dont votre cuisine a besoin. Rien de superflu.",
+    "list": {
+      "inventory": { "title": "Stock intelligent", "desc": "Scan QR, alertes stock bas" },
+      "waste": { "title": "Gestion des déchets", "desc": "Enregistrez, suivez, analysez les coûts" },
+      "tasks": { "title": "Gestion des tâches", "desc": "Assignez, suivez, responsabilisez" },
+      "supplier": { "title": "Fournisseurs & listes", "desc": "Générées depuis le stock" },
+      "staff": { "title": "Équipe & plannings", "desc": "Invitez par code, gérez les shifts" },
+      "logs": { "title": "Journal d'activité", "desc": "Traçabilité totale, transparence" }
+    }
+  },
+  "how": {
+    "title": "Opérationnel en quelques minutes",
+    "steps": {
+      "one": "Créez votre cuisine",
+      "two": "Ajoutez votre inventaire",
+      "three": "Pilotez plus intelligemment"
+    }
+  },
+  "screens": {
+    "title": "KitchFlow en action",
+    "labels": { "inventory": "Stock", "tasks": "Tâches", "waste": "Déchets", "shopping": "Courses" }
+  },
+  "who": {
+    "title": "Conçu pour toutes les cuisines",
+    "items": {
+      "restaurants": "Restaurants",
+      "cafes": "Cafés",
+      "catering": "Traiteurs",
+      "any": "Toute entreprise"
+    }
+  },
+  "waitlist": {
+    "title": "Soyez les premiers informés du lancement",
+    "placeholder": "vous@cuisine.com",
+    "cta": "Rejoindre",
+    "success": "Vous êtes inscrit·e ! Nous vous tiendrons informé·e.",
+    "privacy": "🔒 Vie privée respectée. Désinscription à tout moment."
+  },
+  "footer": {
+    "tagline": "La plateforme tout-en-un pour les opérations en cuisine",
+    "privacy": "Confidentialité",
+    "rights": "Tous droits réservés.",
+    "available": "Bientôt disponible sur App Store & Google Play"
+  },
+  "blog": {
+    "title": "Insights cuisine",
+    "subtitle": "Conseils, guides et récits pour les pros de la restauration",
+    "all": "Tous",
+    "back": "← Tous les articles",
+    "related": "Articles liés",
+    "share": "Partager",
+    "minRead": "min de lecture"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Nous lisons chaque message. Dites-nous tout.",
+    "based": "Basé à Stockholm, Suède 🇸🇪",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "subject": "Sujet",
+      "message": "Message",
+      "send": "Envoyer",
+      "sending": "Envoi…",
+      "success": "Merci ! Nous revenons vers vous sous 24h.",
+      "error": "Une erreur est survenue. Réessayez.",
+      "subjects": {
+        "general": "Question générale",
+        "partnership": "Partenariat",
+        "press": "Presse",
+        "bug": "Signaler un bug",
+        "other": "Autre"
+      }
+    }
+  }
+}
