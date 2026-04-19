@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from "framer-motion";
 import { Package, Recycle, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";

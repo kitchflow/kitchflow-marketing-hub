@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";

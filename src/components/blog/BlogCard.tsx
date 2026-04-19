@@ -1,34 +1,35 @@
-import { Link } from "@tanstack/react-router";
-import { Camera } from "lucide-react";
-import type { Post } from "@/types";
-import { urlFor } from "@/lib/sanity";
-import { useTranslation } from "react-i18next";
+'use client'
+
+import Link from 'next/link'
+import { Camera } from 'lucide-react'
+import type { Post } from '@/types'
+import { urlFor } from '@/lib/sanity'
+import { useTranslation } from 'react-i18next'
 
 function formatDate(d: string, locale: string) {
   try {
     return new Date(d).toLocaleDateString(locale, {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    })
   } catch {
-    return d;
+    return d
   }
 }
 
 export function BlogCard({ post }: { post: Post }) {
-  const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation()
   const img = post.coverImage?.asset
-    ? urlFor(post.coverImage).width(800).height(500).fit("crop").auto("format").url()
-    : null;
+    ? urlFor(post.coverImage).width(800).height(500).fit('crop').auto('format').url()
+    : null
 
   return (
     <Link
-      to="/blog/$slug"
-      params={{ slug: post.slug.current }}
+      href={`/blog/${post.slug.current}`}
       className="group block rounded-2xl bg-card border border-border overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
     >
-      <div className="relative w-full bg-muted overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
+      <div className="relative w-full bg-muted overflow-hidden" style={{ aspectRatio: '16 / 10' }}>
         {img ? (
           <img
             src={img}
@@ -50,13 +51,11 @@ export function BlogCard({ post }: { post: Post }) {
           {post.title}
         </h3>
         {post.excerpt && (
-          <p className="mt-2 text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-            {post.excerpt}
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.excerpt}</p>
         )}
         <div className="mt-5 flex items-center gap-3 text-xs text-muted-foreground">
           <span className="inline-flex h-7 w-7 rounded-full bg-muted items-center justify-center font-semibold text-foreground">
-            {post.author?.name?.[0] ?? "K"}
+            {post.author?.name?.[0] ?? 'K'}
           </span>
           <span className="font-medium text-foreground">{post.author?.name}</span>
           <span>·</span>
@@ -65,12 +64,12 @@ export function BlogCard({ post }: { post: Post }) {
             <>
               <span>·</span>
               <span>
-                {post.readTime} {t("blog.minRead")}
+                {post.readTime} {t('blog.minRead')}
               </span>
             </>
           )}
         </div>
       </div>
     </Link>
-  );
+  )
 }
