@@ -1,26 +1,41 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Hero } from "@/components/home/Hero";
+import { ProblemSection } from "@/components/home/ProblemSection";
+import { FeaturesSection } from "@/components/home/FeaturesSection";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { Screenshots } from "@/components/home/Screenshots";
+import { WhoItsFor } from "@/components/home/WhoItsFor";
+import { WaitlistCTA } from "@/components/home/WaitlistCTA";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "KitchFlow — Run Your Kitchen. Not Just Your Menu." },
+      {
+        name: "description",
+        content:
+          "The all-in-one app for kitchen inventory, staff, tasks, waste tracking, and scheduling. Coming soon.",
+      },
+      { property: "og:title", content: "KitchFlow — Kitchen operations, simplified" },
+      {
+        property: "og:description",
+        content: "Inventory, staff, tasks, waste — one app for every kitchen.",
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <>
+      <Hero />
+      <ProblemSection />
+      <FeaturesSection />
+      <HowItWorks />
+      <Screenshots />
+      <WhoItsFor />
+      <WaitlistCTA />
+    </>
+  );
 }
