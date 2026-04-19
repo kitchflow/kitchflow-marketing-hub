@@ -10,8 +10,87 @@ import { mockPosts, mockBodyFor } from "@/lib/blog-data";
 import type { Post } from "@/types";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { portableTextComponents } from "@/components/blog/PortableTextComponents";
+import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
+
+type LoaderData = {
+  title: string;
+  description: string;
+  image: string;
+  url: string;
+  publishedAt: string;
+  authorName: string;
+};
 
 export const Route = createFileRoute("/blog/$slug")({
+  loader: async ({ params }): Promise<LoaderData> => {
+    const url = `${SITE_URL}/blog/${params.slug}`;
+    let post: Post | null = null;
+    try {
+      post = await client.fetch<Post | null>(postBySlugQuery, { slug: params.slug });
+    } catch {
+      // ignore — fall through to mock
+    }
+    if (!post) {
+      post = mockPosts.find((p) => p.slug.current === params.slug) ?? null;
+    }
+    if (!post) {
+      return {
+        title: "Article | KitchFlow",
+        description: "Read more from the KitchFlow blog.",
+        image: DEFAULT_OG_IMAGE,
+        url,
+        publishedAt: new Date().toISOString(),
+        authorName: "KitchFlow Team",
+      };
+    }
+    const image = post.coverImage?.asset
+      ? urlFor(post.coverImage).width(1200).height(630).auto("format").url()
+      : DEFAULT_OG_IMAGE;
+    return {
+      title: `${post.title} | KitchFlow`,
+      description: (post.seoDescription || post.excerpt || "").slice(0, 160),
+      image,
+      url,
+      publishedAt: post.publishedAt,
+      authorName: post.author?.name ?? "KitchFlow Team",
+    };
+  },
+  head: ({ loaderData }) => {
+    if (!loaderData) return { meta: [] };
+    const { title, description, image, url, publishedAt, authorName } = loaderData;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
+        { property: "og:image", content: image },
+        { property: "article:published_time", content: publishedAt },
+        { property: "article:author", content: authorName },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "twitter:image", content: image },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: title,
+            description,
+            image,
+            datePublished: publishedAt,
+            author: { "@type": "Person", name: authorName },
+            mainEntityOfPage: { "@type": "WebPage", "@id": url },
+          }),
+        },
+      ],
+    };
+  },
   component: BlogPostPage,
 });
 
@@ -91,7 +170,7 @@ function BlogPostPage() {
     : null;
 
   const shareUrl =
-    typeof window !== "undefined" ? window.location.href : `https://kitchflow.app/blog/${slug}`;
+    typeof window !== "undefined" ? window.location.href : `${SITE_URL}/blog/${slug}`;
 
   const copyLink = async () => {
     try {
