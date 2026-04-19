@@ -50,6 +50,7 @@ export const Route = createRootRoute({
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1735e8bb-be56-468d-8d9d-e64c6dfabbf1/id-preview-b8b09531--924f6331-8841-4d85-be03-d9d7b32cee41.lovable.app-1776622819595.png" },
     ],
     links: [
+      { rel: "icon", href: "/kitchflow-logo.svg", type: "image/svg+xml" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
