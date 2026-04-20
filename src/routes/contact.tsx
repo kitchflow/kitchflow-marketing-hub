@@ -130,10 +130,10 @@ function ContactPage() {
                     <a
                       key={i}
                       href="#"
-                      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border hover:border-foreground/40 hover:bg-muted transition"
+                      className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:border-foreground/40 hover:bg-muted transition"
                       aria-label="social"
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-6 w-6" />
                     </a>
                   ))}
                 </div>

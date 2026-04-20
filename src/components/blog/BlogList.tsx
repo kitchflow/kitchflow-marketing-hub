@@ -57,10 +57,10 @@ export function BlogList({ posts }: { posts: Post[] }) {
           <button
             disabled={page === 0}
             onClick={() => setPage((p) => Math.max(0, p - 1))}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border disabled:opacity-40 hover:bg-muted transition"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border disabled:opacity-40 hover:bg-muted transition"
             aria-label="Previous"
           >
-            <ChevronLeft className="h-4 w-4 rtl-flip" />
+            <ChevronLeft className="h-5 w-5 rtl-flip" />
           </button>
           <span className="text-sm text-muted-foreground">
             {page + 1} / {totalPages}
@@ -68,10 +68,10 @@ export function BlogList({ posts }: { posts: Post[] }) {
           <button
             disabled={page >= totalPages - 1}
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border disabled:opacity-40 hover:bg-muted transition"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border disabled:opacity-40 hover:bg-muted transition"
             aria-label="Next"
           >
-            <ChevronRight className="h-4 w-4 rtl-flip" />
+            <ChevronRight className="h-5 w-5 rtl-flip" />
           </button>
         </div>
       )}

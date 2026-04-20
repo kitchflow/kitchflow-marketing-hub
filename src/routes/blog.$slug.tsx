@@ -202,7 +202,7 @@ function BlogPostPage() {
           </h1>
 
           <div className="mt-6 flex items-center gap-3 text-sm text-muted-foreground">
-            <span className="inline-flex h-9 w-9 rounded-full bg-muted items-center justify-center font-semibold text-foreground">
+            <span className="inline-flex h-12 w-12 rounded-full bg-muted items-center justify-center text-base font-semibold text-foreground">
               {post.author?.name?.[0] ?? "K"}
             </span>
             <span className="font-medium text-foreground">{post.author?.name}</span>
@@ -224,7 +224,7 @@ function BlogPostPage() {
             <img src={cover} alt={post.title} className="h-full w-full object-cover" />
           ) : (
             <div className="h-full w-full flex items-center justify-center text-muted-foreground">
-              <Camera className="h-10 w-10" strokeWidth={1.5} />
+              <Camera className="h-12 w-12" strokeWidth={1.5} />
             </div>
           )}
         </div>
@@ -254,26 +254,26 @@ function BlogPostPage() {
             href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:bg-muted transition"
             aria-label="Share on X"
           >
-            <Twitter className="h-4 w-4" />
+            <Twitter className="h-5 w-5" />
           </a>
           <a
             href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:bg-muted transition"
             aria-label="Share on LinkedIn"
           >
-            <Linkedin className="h-4 w-4" />
+            <Linkedin className="h-5 w-5" />
           </a>
           <button
             onClick={copyLink}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:bg-muted transition"
             aria-label="Copy link"
           >
-            <Copy className="h-4 w-4" />
+            <Copy className="h-5 w-5" />
           </button>
         </div>
       </div>

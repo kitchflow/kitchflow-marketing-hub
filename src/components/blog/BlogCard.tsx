@@ -55,7 +55,7 @@ export function BlogCard({ post }: { post: Post }) {
           </p>
         )}
         <div className="mt-5 flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="inline-flex h-7 w-7 rounded-full bg-muted items-center justify-center font-semibold text-foreground">
+          <span className="inline-flex h-9 w-9 rounded-full bg-muted items-center justify-center text-sm font-semibold text-foreground">
             {post.author?.name?.[0] ?? "K"}
           </span>
           <span className="font-medium text-foreground">{post.author?.name}</span>

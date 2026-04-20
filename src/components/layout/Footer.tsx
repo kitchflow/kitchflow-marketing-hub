@@ -33,8 +33,8 @@ export function Footer() {
             <h4 className="text-sm font-semibold mb-4">Connect</h4>
             <div className="flex gap-3 mb-5">
               {[Instagram, Linkedin, Twitter].map((Icon, i) => (
-                <a key={i} href="#" aria-label="social" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:border-foreground/40 hover:bg-muted transition-all">
-                  <Icon className="h-4 w-4" />
+                <a key={i} href="#" aria-label="social" className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:border-foreground/40 hover:bg-muted transition-all">
+                  <Icon className="h-5 w-5" />
                 </a>
               ))}
             </div>

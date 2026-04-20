@@ -46,7 +46,7 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex-shrink-0">
-            <Logo />
+            <Logo iconSize={36} textClassName="text-xl sm:text-2xl" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -67,11 +67,11 @@ export function Navbar() {
           </div>
 
           <button
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted"
+            className="md:hidden inline-flex h-12 w-12 items-center justify-center rounded-full hover:bg-muted"
             onClick={() => setOpen((o) => !o)}
             aria-label="Menu"
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>

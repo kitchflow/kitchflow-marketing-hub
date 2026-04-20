@@ -66,7 +66,7 @@ export function Hero() {
             >
               <div className="flex -space-x-2">
                 {["bg-primary/30", "bg-secondary/40", "bg-warning/40"].map((c, i) => (
-                  <div key={i} className={`h-9 w-9 rounded-full border-2 border-background ${c}`} />
+                  <div key={i} className={`h-12 w-12 rounded-full border-2 border-background ${c}`} />
                 ))}
               </div>
               <p className="text-sm text-muted-foreground">{t("hero.social")}</p>
