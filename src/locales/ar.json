@@ -44,7 +44,7 @@
   },
   "screens": {
     "title": "كيتش‌فلو أثناء العمل",
-    "labels": { "inventory": "المخزون", "tasks": "المهام", "waste": "الهدر", "shopping": "قائمة التسوق" }
+    "labels": { "inventory": "المخزون", "schedule": "الجدول", "waste": "الهدر", "shopping": "قائمة التسوق" }
   },
   "who": {
     "title": "صُمم لكل مطبخ",

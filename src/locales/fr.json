@@ -44,7 +44,7 @@
   },
   "screens": {
     "title": "KitchFlow en action",
-    "labels": { "inventory": "Stock", "tasks": "Tâches", "waste": "Déchets", "shopping": "Courses" }
+    "labels": { "inventory": "Stock", "schedule": "Planning", "waste": "Déchets", "shopping": "Courses" }
   },
   "who": {
     "title": "Conçu pour toutes les cuisines",

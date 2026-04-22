@@ -44,7 +44,7 @@
   },
   "screens": {
     "title": "See KitchFlow in action",
-    "labels": { "inventory": "Inventory", "tasks": "Tasks", "waste": "Waste", "shopping": "Shopping List" }
+    "labels": { "inventory": "Inventory", "schedule": "Schedule", "waste": "Waste", "shopping": "Shopping List" }
   },
   "who": {
     "title": "Built for every kitchen",
