@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/KFButton";
 import { PhoneMockup } from "@/components/ui/PhoneMockup";
+import appHomeScreenshot from "@/assets/app-home-screenshot.png";
 
 export function Hero() {
   const { t } = useTranslation();
@@ -80,7 +81,12 @@ export function Hero() {
             className="lg:col-span-5 flex justify-center"
           >
             <div className="w-[260px] sm:w-[300px] lg:w-[340px]">
-              <PhoneMockup label="KitchFlow" glow />
+              <PhoneMockup
+                label="KitchFlow"
+                glow
+                image={appHomeScreenshot}
+                alt="KitchFlow app home screen showing daily kitchen overview"
+              />
             </div>
           </motion.div>
         </div>
