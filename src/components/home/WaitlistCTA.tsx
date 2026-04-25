@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/KFButton";
-import { client } from "@/lib/sanity";
+import { submitWaitlist } from "@/lib/forms.functions";
 
 const emailSchema = z
   .string()
@@ -25,18 +25,16 @@ export function WaitlistCTA() {
     }
     setLoading(true);
     try {
-      await client.create({
-        _type: "waitlist",
-        email: parsed.data,
-        submittedAt: new Date().toISOString(),
-      });
-      toast.success(t("waitlist.success"));
-      setEmail("");
+      const result = await submitWaitlist({ data: { email: parsed.data } });
+      if (result.success) {
+        toast.success(t("waitlist.success"));
+        setEmail("");
+      } else {
+        toast.error(result.error);
+      }
     } catch (err) {
-      // Sanity write requires a token; gracefully degrade.
       console.error("Waitlist save failed", err);
-      toast.success(t("waitlist.success"));
-      setEmail("");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

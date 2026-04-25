@@ -5,7 +5,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { Mail, Instagram, Linkedin, Twitter, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/KFButton";
-import { client } from "@/lib/sanity";
+import { submitContactMessage } from "@/lib/forms.functions";
 import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const TITLE = "Contact Us | KitchFlow";
@@ -67,18 +67,16 @@ function ContactPage() {
     setErrors({});
     setLoading(true);
     try {
-      await client.create({
-        _type: "contactMessage",
-        ...parsed.data,
-        submittedAt: new Date().toISOString(),
-      });
-      toast.success(t("contact.form.success"));
-      setForm({ name: "", email: "", subject: "general", message: "" });
+      const result = await submitContactMessage({ data: parsed.data });
+      if (result.success) {
+        toast.success(t("contact.form.success"));
+        setForm({ name: "", email: "", subject: "general", message: "" });
+      } else {
+        toast.error(result.error);
+      }
     } catch (err) {
       console.error("Contact save failed", err);
-      // Graceful UX: still confirm receipt; the absence of a Sanity write token is the cause.
-      toast.success(t("contact.form.success"));
-      setForm({ name: "", email: "", subject: "general", message: "" });
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
