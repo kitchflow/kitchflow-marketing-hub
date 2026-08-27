@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "sanity dev",
     "build": "sanity build",
-    "deploy": "sanity deploy"
+    "deploy": "sanity deploy",
+    "import:posts": "sanity exec scripts/import-posts.js --with-user-token"
   },
   "dependencies": {
     "react": "^19.2.0",

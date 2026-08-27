@@ -1,4 +1,5 @@
 import type { PortableTextBlock } from "@portabletext/react";
+import type { Lang } from "@/lib/i18n";
 
 export type Slug = { current: string };
 
@@ -15,8 +16,16 @@ export type Author = {
   bio?: string;
 };
 
+export type PostTranslation = {
+  language: Lang;
+  slug: string;
+  title: string;
+};
+
 export type Post = {
   _id: string;
+  language: Lang;
+  translationKey: string;
   title: string;
   slug: Slug;
   excerpt?: string;

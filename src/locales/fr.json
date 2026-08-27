@@ -75,7 +75,8 @@
     "back": "← Tous les articles",
     "related": "Articles liés",
     "share": "Partager",
-    "minRead": "min de lecture"
+    "minRead": "min de lecture",
+    "empty": "Aucun article dans cette langue pour le moment."
   },
   "contact": {
     "title": "Contactez-nous",

@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "studio": "npm --prefix studio run dev",
-    "studio:build": "npm --prefix studio run build"
+    "studio:build": "npm --prefix studio run build",
+    "import:posts": "npm --prefix studio run import:posts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

@@ -75,7 +75,8 @@
     "back": "← All Articles",
     "related": "Related articles",
     "share": "Share",
-    "minRead": "min read"
+    "minRead": "min read",
+    "empty": "No articles in this language yet."
   },
   "contact": {
     "title": "Get in Touch",

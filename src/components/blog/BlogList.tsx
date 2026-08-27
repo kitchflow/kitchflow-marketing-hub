@@ -43,7 +43,7 @@ export function BlogList({ posts }: { posts: Post[] }) {
       </div>
 
       {visible.length === 0 ? (
-        <p className="mt-16 text-center text-muted-foreground">No articles yet.</p>
+        <p className="mt-16 text-center text-muted-foreground">{t("blog.empty")}</p>
       ) : (
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {visible.map((post) => (

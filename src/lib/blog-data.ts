@@ -3,6 +3,8 @@ import type { Post } from "@/types";
 export const mockPosts: Post[] = [
   {
     _id: "1",
+    language: "en",
+    translationKey: "reduce-kitchen-waste",
     title: "How to Reduce Kitchen Waste by 40%",
     slug: { current: "reduce-kitchen-waste" },
     excerpt:
@@ -14,6 +16,8 @@ export const mockPosts: Post[] = [
   },
   {
     _id: "2",
+    language: "en",
+    translationKey: "kitchen-inventory-management",
     title: "The Ultimate Guide to Kitchen Inventory Management",
     slug: { current: "kitchen-inventory-management" },
     excerpt:
@@ -25,6 +29,8 @@ export const mockPosts: Post[] = [
   },
   {
     _id: "3",
+    language: "en",
+    translationKey: "accountable-kitchen-team",
     title: "How to Build an Accountable Kitchen Team",
     slug: { current: "accountable-kitchen-team" },
     excerpt:
@@ -35,6 +41,9 @@ export const mockPosts: Post[] = [
     author: { name: "KitchFlow Team" },
   },
 ];
+
+export const mockPostsForLanguage = (language: Post["language"]) =>
+  mockPosts.filter((post) => post.language === language);
 
 export const mockBodyFor = (slug: string) => {
   const bodies: Record<string, string[]> = {

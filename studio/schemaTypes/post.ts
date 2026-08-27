@@ -8,11 +8,39 @@ const categories = [
   { title: "General", value: "General" },
 ] as const;
 
+const languages = [
+  { title: "English", value: "en" },
+  { title: "Français", value: "fr" },
+  { title: "العربية", value: "ar" },
+] as const;
+
 export const postType = defineType({
   name: "post",
   title: "Blog post",
   type: "document",
   fields: [
+    defineField({
+      name: "language",
+      title: "Language",
+      type: "string",
+      options: { list: [...languages], layout: "radio" },
+      initialValue: "en",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "translationKey",
+      title: "Translation key",
+      type: "string",
+      description:
+        "Shared ID for all language versions of this article (e.g. reduce-kitchen-waste). Use the same key when duplicating for FR or AR.",
+      validation: (rule) =>
+        rule
+          .required()
+          .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+            name: "slug",
+            invert: false,
+          }),
+    }),
     defineField({
       name: "title",
       title: "Title",
@@ -119,9 +147,43 @@ export const postType = defineType({
     }),
   ],
   preview: {
-    select: { title: "title", media: "coverImage", category: "category" },
-    prepare({ title, media, category }) {
-      return { title: title ?? "Untitled", subtitle: category, media };
+    select: { title: "title", media: "coverImage", category: "category", language: "language" },
+    prepare({ title, media, category, language }) {
+      const langLabel = language ? `[${String(language).toUpperCase()}] ` : "";
+      return {
+        title: `${langLabel}${title ?? "Untitled"}`,
+        subtitle: category,
+        media,
+      };
     },
   },
+  validation: (rule) =>
+    rule.custom(async (_, context) => {
+      const { document, getClient } = context;
+      const language = document?.language;
+      const translationKey = document?.translationKey;
+      const rawId = document?._id?.replace(/^drafts\./, "");
+
+      if (!language || !translationKey || !rawId) return true;
+
+      const client = getClient({ apiVersion: "2024-01-01" });
+      const duplicateCount = await client.fetch<number>(
+        `count(*[
+          _type == "post"
+          && translationKey == $translationKey
+          && language == $language
+          && !(_id in [$draftId, $publishedId])
+        ])`,
+        {
+          translationKey,
+          language,
+          draftId: `drafts.${rawId}`,
+          publishedId: rawId,
+        },
+      );
+
+      return duplicateCount === 0
+        ? true
+        : "A post with this translation key and language already exists.";
+    }),
 });

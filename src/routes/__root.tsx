@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import { useEffect } from "react";
 import { Toaster } from "sonner";
 import i18n, { applyLangToDocument, type Lang } from "@/lib/i18n";
+import { BlogTranslationProvider } from "@/contexts/blog-translation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
@@ -85,23 +86,25 @@ function RootComponent() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      <Footer />
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          style: {
-            borderRadius: "9999px",
-            border: "1px solid var(--color-border)",
-            background: "var(--color-background)",
-            color: "var(--color-foreground)",
-          },
-        }}
-      />
-    </div>
+    <BlogTranslationProvider>
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <Footer />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              borderRadius: "9999px",
+              border: "1px solid var(--color-border)",
+              background: "var(--color-background)",
+              color: "var(--color-foreground)",
+            },
+          }}
+        />
+      </div>
+    </BlogTranslationProvider>
   );
 }

@@ -7,6 +7,12 @@ import ar from "@/locales/ar.json";
 export const SUPPORTED_LANGS = ["en", "fr", "ar"] as const;
 export type Lang = (typeof SUPPORTED_LANGS)[number];
 
+/** Map i18next codes (e.g. en-US) to a supported CMS / UI language. */
+export const resolveLang = (code?: string | null): Lang => {
+  const base = (code ?? "en").split("-")[0] as Lang;
+  return SUPPORTED_LANGS.includes(base) ? base : "en";
+};
+
 const getInitialLang = (): Lang => {
   if (typeof window === "undefined") return "en";
   const stored = window.localStorage.getItem("kf-lang") as Lang | null;

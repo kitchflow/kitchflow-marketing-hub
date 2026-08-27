@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { client } from "@/lib/sanity";
 import { allPostsQuery } from "@/lib/queries";
-import { mockPosts } from "@/lib/blog-data";
+import { mockPostsForLanguage } from "@/lib/blog-data";
+import { resolveLang } from "@/lib/i18n";
 import type { Post } from "@/types";
 import { BlogList } from "@/components/blog/BlogList";
 import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -32,22 +33,36 @@ export const Route = createFileRoute("/blog/")({
   component: BlogIndex,
 });
 
+const postsForLang = (items: Post[], lang: ReturnType<typeof resolveLang>) =>
+  items.filter((post) => post.language === lang);
+
 function BlogIndex() {
-  const { t } = useTranslation();
-  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const { t, i18n } = useTranslation();
+  const lang = resolveLang(i18n.resolvedLanguage ?? i18n.language);
+  const [posts, setPosts] = useState<Post[]>(() => mockPostsForLanguage(lang));
 
   useEffect(() => {
     let mounted = true;
     client
-      .fetch<Post[]>(allPostsQuery)
+      .fetch<Post[]>(allPostsQuery, { lang })
       .then((data) => {
-        if (mounted && data && data.length > 0) setPosts(data);
+        if (!mounted) return;
+        const localized = postsForLang(data ?? [], lang);
+        if (localized.length > 0) {
+          setPosts(localized);
+          return;
+        }
+        setPosts(mockPostsForLanguage(lang));
       })
-      .catch((err) => console.warn("Sanity fetch failed, using mock posts", err));
+      .catch((err) => {
+        console.warn("Sanity fetch failed, using mock posts", err);
+        if (!mounted) return;
+        setPosts(mockPostsForLanguage(lang));
+      });
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [lang]);
 
   return (
     <section className="py-16 lg:py-24">
@@ -59,7 +74,7 @@ function BlogIndex() {
           <p className="mt-4 text-lg text-muted-foreground">{t("blog.subtitle")}</p>
         </div>
 
-        <BlogList posts={posts} />
+        <BlogList key={lang} posts={posts} />
       </div>
     </section>
   );

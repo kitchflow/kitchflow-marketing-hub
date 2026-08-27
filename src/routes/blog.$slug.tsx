@@ -5,9 +5,10 @@ import { PortableText } from "@portabletext/react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { client, urlFor } from "@/lib/sanity";
-import { postBySlugQuery, relatedPostsQuery } from "@/lib/queries";
+import { postBySlugQuery, postTranslationsQuery, relatedPostsQuery } from "@/lib/queries";
 import { mockPosts, mockBodyFor } from "@/lib/blog-data";
-import type { Post } from "@/types";
+import { useBlogTranslations } from "@/contexts/blog-translation";
+import type { Post, PostTranslation } from "@/types";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { portableTextComponents } from "@/components/blog/PortableTextComponents";
 import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -19,20 +20,45 @@ type LoaderData = {
   url: string;
   publishedAt: string;
   authorName: string;
+  alternates: PostTranslation[];
 };
+
+async function loadPost(slug: string): Promise<Post | null> {
+  try {
+    const post = await client.fetch<Post | null>(postBySlugQuery, { slug });
+    if (post) return post;
+  } catch {
+    // fall through to mock
+  }
+  return mockPosts.find((p) => p.slug.current === slug) ?? null;
+}
+
+async function loadTranslations(post: Post): Promise<PostTranslation[]> {
+  if (!post.translationKey) return [];
+
+  try {
+    const translations = await client.fetch<PostTranslation[]>(postTranslationsQuery, {
+      translationKey: post.translationKey,
+    });
+    if (translations.length > 0) return translations;
+  } catch {
+    // fall through to mock siblings
+  }
+
+  return mockPosts
+    .filter((p) => p.translationKey === post.translationKey)
+    .map((p) => ({
+      language: p.language,
+      slug: p.slug.current,
+      title: p.title,
+    }));
+}
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }): Promise<LoaderData> => {
     const url = `${SITE_URL}/blog/${params.slug}`;
-    let post: Post | null = null;
-    try {
-      post = await client.fetch<Post | null>(postBySlugQuery, { slug: params.slug });
-    } catch {
-      // ignore — fall through to mock
-    }
-    if (!post) {
-      post = mockPosts.find((p) => p.slug.current === params.slug) ?? null;
-    }
+    const post = await loadPost(params.slug);
+
     if (!post) {
       return {
         title: "Article | KitchFlow",
@@ -41,11 +67,15 @@ export const Route = createFileRoute("/blog/$slug")({
         url,
         publishedAt: new Date().toISOString(),
         authorName: "KitchFlow Team",
+        alternates: [],
       };
     }
+
+    const alternates = await loadTranslations(post);
     const image = post.coverImage?.asset
       ? urlFor(post.coverImage).width(1200).height(630).auto("format").url()
       : DEFAULT_OG_IMAGE;
+
     return {
       title: `${post.title} | KitchFlow`,
       description: (post.seoDescription || post.excerpt || "").slice(0, 160),
@@ -53,11 +83,15 @@ export const Route = createFileRoute("/blog/$slug")({
       url,
       publishedAt: post.publishedAt,
       authorName: post.author?.name ?? "KitchFlow Team",
+      alternates,
     };
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] };
-    const { title, description, image, url, publishedAt, authorName } = loaderData;
+    const { title, description, image, url, publishedAt, authorName, alternates } = loaderData;
+    const defaultAlternate =
+      alternates.find((item) => item.language === "en") ?? alternates[0];
+
     return {
       meta: [
         { title },
@@ -73,7 +107,23 @@ export const Route = createFileRoute("/blog/$slug")({
         { name: "twitter:description", content: description },
         { name: "twitter:image", content: image },
       ],
-      links: [{ rel: "canonical", href: url }],
+      links: [
+        { rel: "canonical", href: url },
+        ...alternates.map((item) => ({
+          rel: "alternate" as const,
+          hrefLang: item.language,
+          href: `${SITE_URL}/blog/${item.slug}`,
+        })),
+        ...(defaultAlternate
+          ? [
+              {
+                rel: "alternate" as const,
+                hrefLang: "x-default",
+                href: `${SITE_URL}/blog/${defaultAlternate.slug}`,
+              },
+            ]
+          : []),
+      ],
       scripts: [
         {
           type: "application/ld+json",
@@ -109,53 +159,81 @@ function formatDate(d: string, locale: string) {
 function BlogPostPage() {
   const { slug } = Route.useParams();
   const { t, i18n } = useTranslation();
+  const { setTranslations } = useBlogTranslations();
   const [post, setPost] = useState<Post | null>(null);
   const [related, setRelated] = useState<Post[]>([]);
   const [usingMock, setUsingMock] = useState(false);
 
   useEffect(() => {
     let mounted = true;
+
+    const loadRelated = (current: Post, fromSanity: boolean) => {
+      if (fromSanity) {
+        client
+          .fetch<Post[]>(relatedPostsQuery, {
+            slug,
+            category: current.category,
+            language: current.language,
+          })
+          .then((rel) => mounted && setRelated(rel ?? []))
+          .catch(() => mounted && setRelated([]));
+        return;
+      }
+
+      setRelated(
+        mockPosts
+          .filter(
+            (p) =>
+              p.category === current.category &&
+              p.slug.current !== slug &&
+              p.language === current.language,
+          )
+          .slice(0, 2),
+      );
+    };
+
     client
       .fetch<Post | null>(postBySlugQuery, { slug })
-      .then((data) => {
+      .then(async (data) => {
         if (!mounted) return;
+
         if (data) {
           setPost(data);
           setUsingMock(false);
-          client
-            .fetch<Post[]>(relatedPostsQuery, { slug, category: data.category })
-            .then((rel) => mounted && setRelated(rel ?? []))
-            .catch(() => {});
+          const translations = await loadTranslations(data);
+          if (mounted) setTranslations(translations);
+          loadRelated(data, true);
+          return;
+        }
+
+        const mock = mockPosts.find((p) => p.slug.current === slug) ?? null;
+        setPost(mock);
+        setUsingMock(true);
+        if (mock) {
+          setTranslations(await loadTranslations(mock));
+          loadRelated(mock, false);
         } else {
-          const mock = mockPosts.find((p) => p.slug.current === slug) ?? null;
-          setPost(mock);
-          setUsingMock(true);
-          if (mock) {
-            setRelated(
-              mockPosts
-                .filter((p) => p.category === mock.category && p.slug.current !== slug)
-                .slice(0, 2),
-            );
-          }
+          setTranslations(null);
         }
       })
-      .catch(() => {
+      .catch(async () => {
         const mock = mockPosts.find((p) => p.slug.current === slug) ?? null;
         if (!mounted) return;
         setPost(mock);
         setUsingMock(true);
         if (mock) {
-          setRelated(
-            mockPosts
-              .filter((p) => p.category === mock.category && p.slug.current !== slug)
-              .slice(0, 2),
-          );
+          setTranslations(await loadTranslations(mock));
+          loadRelated(mock, false);
+        } else {
+          setTranslations(null);
         }
       });
+
     return () => {
       mounted = false;
+      setTranslations(null);
     };
-  }, [slug]);
+  }, [slug, setTranslations]);
 
   if (!post) {
     return (
@@ -219,7 +297,10 @@ function BlogPostPage() {
           </div>
         </div>
 
-        <div className="mt-10 w-full bg-muted rounded-2xl border border-border overflow-hidden" style={{ aspectRatio: "16 / 9" }}>
+        <div
+          className="mt-10 w-full bg-muted rounded-2xl border border-border overflow-hidden"
+          style={{ aspectRatio: "16 / 9" }}
+        >
           {cover ? (
             <img src={cover} alt={post.title} className="h-full w-full object-cover" />
           ) : (
