@@ -7,6 +7,7 @@ import { mockPostsForLanguage } from "@/lib/blog-data";
 import { resolveLang } from "@/lib/i18n";
 import type { Post } from "@/types";
 import { BlogList } from "@/components/blog/BlogList";
+import { BlogListSkeleton } from "@/components/blog/BlogListSkeleton";
 import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const TITLE = "Kitchen Insights | KitchFlow Blog";
@@ -39,20 +40,17 @@ const postsForLang = (items: Post[], lang: ReturnType<typeof resolveLang>) =>
 function BlogIndex() {
   const { t, i18n } = useTranslation();
   const lang = resolveLang(i18n.resolvedLanguage ?? i18n.language);
-  const [posts, setPosts] = useState<Post[]>(() => mockPostsForLanguage(lang));
+  const [posts, setPosts] = useState<Post[] | null>(null);
 
   useEffect(() => {
     let mounted = true;
+    setPosts(null);
     client
       .fetch<Post[]>(allPostsQuery, { lang })
       .then((data) => {
         if (!mounted) return;
         const localized = postsForLang(data ?? [], lang);
-        if (localized.length > 0) {
-          setPosts(localized);
-          return;
-        }
-        setPosts(mockPostsForLanguage(lang));
+        setPosts(localized.length > 0 ? localized : mockPostsForLanguage(lang));
       })
       .catch((err) => {
         console.warn("Sanity fetch failed, using mock posts", err);
@@ -74,7 +72,7 @@ function BlogIndex() {
           <p className="mt-4 text-lg text-muted-foreground">{t("blog.subtitle")}</p>
         </div>
 
-        <BlogList key={lang} posts={posts} />
+        {posts === null ? <BlogListSkeleton /> : <BlogList key={lang} posts={posts} />}
       </div>
     </section>
   );
