@@ -35,6 +35,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "google-site-verification", content: "vRXAIkpz1Yd6LFm3o5LP3rWvZlhl95tDA6YxZmJXK74" },
       { name: "author", content: "KitchFlow" },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "KitchFlow" },
