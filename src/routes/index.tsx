@@ -61,7 +61,7 @@ function Index() {
       <HowItWorks />
       <Screenshots />
       <WhoItsFor />
-      <WaitlistCTA />
+      <DownloadCTA />
     </>
   );
 }

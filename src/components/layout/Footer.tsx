@@ -3,6 +3,7 @@ import { Instagram, Linkedin, Twitter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/ui/Logo";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { APP_STORE_URL } from "@/lib/seo";
 
 export function Footer() {
   const { t } = useTranslation();
@@ -16,7 +17,16 @@ export function Footer() {
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               {t("footer.tagline")}
             </p>
-            <p className="mt-3 text-xs text-muted-foreground">{t("footer.available")}</p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              <a
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground transition-colors underline underline-offset-2"
+              >
+                {t("footer.available")}
+              </a>
+            </p>
           </div>
 
           <div>
