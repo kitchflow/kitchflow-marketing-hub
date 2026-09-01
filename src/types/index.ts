@@ -39,11 +39,6 @@ export type Post = {
   author?: Author;
 };
 
-export type WaitlistEntry = {
-  email: string;
-  submittedAt: string;
-};
-
 export type ContactMessage = {
   name: string;
   email: string;
