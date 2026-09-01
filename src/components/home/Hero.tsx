@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/KFButton";
 import { PhoneMockup } from "@/components/ui/PhoneMockup";
+import { APP_STORE_URL } from "@/lib/seo";
 import appHomeScreenshot from "@/assets/app-home-screenshot.png";
 
 export function Hero() {
@@ -50,8 +51,11 @@ export function Hero() {
               variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
               className="mt-8 flex flex-col sm:flex-row gap-3"
             >
-              <a href="#waitlist">
-                <Button size="lg" className="w-full sm:w-auto">{t("hero.ctaPrimary")}</Button>
+              <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
+                <Button size="lg" className="w-full sm:w-auto group">
+                  {t("hero.ctaPrimary")}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl-flip" />
+                </Button>
               </a>
               <a href="#how">
                 <Button variant="ghost" size="lg" className="w-full sm:w-auto group">

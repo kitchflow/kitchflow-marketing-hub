@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/KFButton";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Logo } from "@/components/ui/Logo";
+import { APP_STORE_URL } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -63,7 +64,9 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center gap-3">
             <LanguageSwitcher compact />
-            <Button size="sm">{t("nav.download")}</Button>
+            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
+              <Button size="sm">{t("nav.download")}</Button>
+            </a>
           </div>
 
           <button
@@ -95,7 +98,9 @@ export function Navbar() {
           </Link>
           <div className="flex items-center justify-between pt-2">
             <LanguageSwitcher />
-            <Button size="sm">{t("nav.download")}</Button>
+            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
+              <Button size="sm">{t("nav.download")}</Button>
+            </a>
           </div>
         </div>
       </div>
