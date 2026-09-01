@@ -5,12 +5,12 @@ import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { Screenshots } from "@/components/home/Screenshots";
 import { WhoItsFor } from "@/components/home/WhoItsFor";
-import { WaitlistCTA } from "@/components/home/WaitlistCTA";
+import { DownloadCTA } from "@/components/home/DownloadCTA";
 import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const TITLE = "KitchFlow — Kitchen Operations Management App";
 const DESCRIPTION =
-  "KitchFlow is the all-in-one mobile app for kitchen operations: inventory, staff, tasks, waste tracking, and scheduling. Coming soon.";
+  "KitchFlow is the all-in-one mobile app for kitchen operations: inventory, staff, tasks, waste tracking, and scheduling. Download now on the App Store.";
 const URL = `${SITE_URL}/`;
 
 const jsonLd = {
