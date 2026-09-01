@@ -1,6 +1,8 @@
 export const SITE_URL = "https://kitchflowapp.com";
 export const SITE_NAME = "KitchFlow";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
+export const APP_STORE_URL =
+  "https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252";
 
 export const absoluteUrl = (path: string) => {
   if (!path) return SITE_URL;
