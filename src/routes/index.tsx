@@ -18,7 +18,7 @@ const jsonLd = {
   "@type": "MobileApplication",
   name: "KitchFlow",
   description: DESCRIPTION,
-  operatingSystem: "iOS, Android",
+  operatingSystem: "iOS",
   applicationCategory: "BusinessApplication",
   offers: {
     "@type": "Offer",
