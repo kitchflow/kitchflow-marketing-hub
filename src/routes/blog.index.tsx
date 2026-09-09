@@ -7,27 +7,25 @@ import { resolveLang } from "@/lib/i18n";
 import type { Post } from "@/types";
 import { BlogList } from "@/components/blog/BlogList";
 import { BlogListSkeleton } from "@/components/blog/BlogListSkeleton";
-import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { SITE_URL, DEFAULT_OG_IMAGE, socialMetaTags } from "@/lib/seo";
 
 const TITLE = "Kitchen Insights | KitchFlow Blog";
+const SOCIAL_TITLE = "Kitchen Insights";
 const DESCRIPTION =
-  "Tips, guides, and stories for food business operators — inventory, waste, staff, and kitchen operations.";
+  "Tips and guides for cafe and kitchen operators: inventory, waste, staffing, and day-to-day ops.";
 const URL = `${SITE_URL}/blog`;
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESCRIPTION },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: URL },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: DEFAULT_OG_IMAGE },
-      { name: "twitter:title", content: TITLE },
-      { name: "twitter:description", content: DESCRIPTION },
-      { name: "twitter:image", content: DEFAULT_OG_IMAGE },
-    ],
+    meta: socialMetaTags({
+      documentTitle: TITLE,
+      socialTitle: SOCIAL_TITLE,
+      description: DESCRIPTION,
+      url: URL,
+      image: DEFAULT_OG_IMAGE,
+      imageAlt: "KitchFlow blog — kitchen operations insights",
+      type: "website",
+    }),
     links: [{ rel: "canonical", href: URL }],
   }),
   component: BlogIndex,

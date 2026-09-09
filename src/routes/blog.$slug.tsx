@@ -10,17 +10,44 @@ import { useBlogTranslations } from "@/contexts/blog-translation";
 import type { Post, PostTranslation } from "@/types";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { portableTextComponents } from "@/components/blog/PortableTextComponents";
-import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import {
+  SITE_URL,
+  DEFAULT_OG_IMAGE,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT,
+  socialMetaTags,
+} from "@/lib/seo";
 
 type LoaderData = {
   title: string;
+  socialTitle: string;
   description: string;
   image: string;
+  imageAlt: string;
   url: string;
   publishedAt: string;
   authorName: string;
+  locale: string;
   alternates: PostTranslation[];
 };
+
+const LOCALE_BY_LANG: Record<string, string> = {
+  en: "en_US",
+  fr: "fr_FR",
+  ar: "ar_AR",
+};
+
+/** Social scrapers often reject WebP — force JPEG at 1200x630. */
+function ogImageUrl(coverImage: Post["coverImage"]): string | null {
+  if (!coverImage?.asset) return null;
+  return urlFor(coverImage)
+    .width(OG_IMAGE_WIDTH)
+    .height(OG_IMAGE_HEIGHT)
+    .fit("crop")
+    .format("jpg")
+    .quality(80)
+    .url();
+}
 
 async function loadPost(slug: string): Promise<Post | null> {
   try {
@@ -52,50 +79,66 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!post) {
       return {
         title: "Article | KitchFlow",
-        description: "Read more from the KitchFlow blog.",
+        socialTitle: "KitchFlow Blog",
+        description: "Practical guides for kitchen and cafe operators from KitchFlow.",
         image: DEFAULT_OG_IMAGE,
+        imageAlt: "KitchFlow",
         url,
         publishedAt: new Date().toISOString(),
         authorName: "KitchFlow Team",
+        locale: "en_US",
         alternates: [],
       };
     }
 
     const alternates = await loadTranslations(post);
-    const image = post.coverImage?.asset
-      ? urlFor(post.coverImage).width(1200).height(630).auto("format").url()
-      : DEFAULT_OG_IMAGE;
+    const socialTitle = (post.seoTitle || post.title).trim();
+    const description = (post.seoDescription || post.excerpt || "").trim().slice(0, 160);
+    const image = ogImageUrl(post.coverImage) ?? DEFAULT_OG_IMAGE;
+    const imageAlt = post.coverImage?.alt?.trim() || `${socialTitle} — KitchFlow`;
 
     return {
-      title: `${post.seoTitle || post.title} | KitchFlow`,
-      description: (post.seoDescription || post.excerpt || "").slice(0, 160),
+      title: `${socialTitle} | KitchFlow`,
+      socialTitle,
+      description: description || "Practical guides for kitchen and cafe operators from KitchFlow.",
       image,
+      imageAlt,
       url,
       publishedAt: post.publishedAt,
       authorName: post.author?.name ?? "KitchFlow Team",
+      locale: LOCALE_BY_LANG[post.language] ?? "en_US",
       alternates,
     };
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] };
-    const { title, description, image, url, publishedAt, authorName, alternates } = loaderData;
+    const {
+      title,
+      socialTitle,
+      description,
+      image,
+      imageAlt,
+      url,
+      publishedAt,
+      authorName,
+      locale,
+      alternates,
+    } = loaderData;
     const defaultAlternate = alternates.find((item) => item.language === "en") ?? alternates[0];
 
     return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:url", content: url },
-        { property: "og:type", content: "article" },
-        { property: "og:image", content: image },
-        { property: "article:published_time", content: publishedAt },
-        { property: "article:author", content: authorName },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "twitter:image", content: image },
-      ],
+      meta: socialMetaTags({
+        documentTitle: title,
+        socialTitle,
+        description,
+        url,
+        image,
+        imageAlt,
+        type: "article",
+        locale,
+        publishedAt,
+        authorName,
+      }),
       links: [
         { rel: "canonical", href: url },
         ...alternates.map((item) => ({
@@ -119,12 +162,18 @@ export const Route = createFileRoute("/blog/$slug")({
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
-            headline: title,
+            headline: socialTitle,
             description,
             image,
             datePublished: publishedAt,
             author: { "@type": "Person", name: authorName },
+            publisher: {
+              "@type": "Organization",
+              name: "KitchFlow",
+              url: SITE_URL,
+            },
             mainEntityOfPage: { "@type": "WebPage", "@id": url },
+            inLanguage: locale.replace("_", "-"),
           }),
         },
       ],

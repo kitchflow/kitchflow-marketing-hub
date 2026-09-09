@@ -39,7 +39,6 @@ export const Route = createRootRoute({
       { name: "author", content: "KitchFlow" },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "KitchFlow" },
-      { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@KitchFlow" },
     ],

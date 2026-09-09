@@ -6,27 +6,25 @@ import { toast } from "sonner";
 import { Mail, Instagram, Linkedin, Twitter, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/KFButton";
 import { submitContactMessage } from "@/lib/forms.functions";
-import { SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { SITE_URL, DEFAULT_OG_IMAGE, socialMetaTags } from "@/lib/seo";
 
 const TITLE = "Contact Us | KitchFlow";
+const SOCIAL_TITLE = "Contact KitchFlow";
 const DESCRIPTION =
-  "Get in touch with the KitchFlow team. Partnerships, press, support, or general inquiries — we read every message.";
+  "Partnerships, press, support, or a quick question. The KitchFlow team reads every message.";
 const URL = `${SITE_URL}/contact`;
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESCRIPTION },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: URL },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: DEFAULT_OG_IMAGE },
-      { name: "twitter:title", content: TITLE },
-      { name: "twitter:description", content: DESCRIPTION },
-      { name: "twitter:image", content: DEFAULT_OG_IMAGE },
-    ],
+    meta: socialMetaTags({
+      documentTitle: TITLE,
+      socialTitle: SOCIAL_TITLE,
+      description: DESCRIPTION,
+      url: URL,
+      image: DEFAULT_OG_IMAGE,
+      imageAlt: "Contact the KitchFlow team",
+      type: "website",
+    }),
     links: [{ rel: "canonical", href: URL }],
   }),
   component: ContactPage,
@@ -150,29 +148,20 @@ function ContactPage() {
           </div>
 
           {/* Right */}
-          <form
-            onSubmit={onSubmit}
-            className="bg-surface rounded-3xl p-7 lg:p-9 space-y-5"
-          >
+          <form onSubmit={onSubmit} className="bg-surface rounded-3xl p-7 lg:p-9 space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-2">
-                {t("contact.form.name")}
-              </label>
+              <label className="block text-sm font-medium mb-2">{t("contact.form.name")}</label>
               <input
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className={inputCls}
                 maxLength={100}
               />
-              {errors.name && (
-                <p className="mt-1.5 text-xs text-destructive">{errors.name}</p>
-              )}
+              {errors.name && <p className="mt-1.5 text-xs text-destructive">{errors.name}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                {t("contact.form.email")}
-              </label>
+              <label className="block text-sm font-medium mb-2">{t("contact.form.email")}</label>
               <input
                 type="email"
                 value={form.email}
@@ -180,15 +169,11 @@ function ContactPage() {
                 className={inputCls}
                 maxLength={255}
               />
-              {errors.email && (
-                <p className="mt-1.5 text-xs text-destructive">{errors.email}</p>
-              )}
+              {errors.email && <p className="mt-1.5 text-xs text-destructive">{errors.email}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                {t("contact.form.subject")}
-              </label>
+              <label className="block text-sm font-medium mb-2">{t("contact.form.subject")}</label>
               <select
                 value={form.subject}
                 onChange={(e) =>
@@ -205,9 +190,7 @@ function ContactPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                {t("contact.form.message")}
-              </label>
+              <label className="block text-sm font-medium mb-2">{t("contact.form.message")}</label>
               <textarea
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
