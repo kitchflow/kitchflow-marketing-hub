@@ -2,8 +2,13 @@ import type { PortableTextComponents } from "@portabletext/react";
 import { urlFor } from "@/lib/sanity";
 import { slugifyHeading } from "@/lib/slugify";
 
-function blockPlainText(value: { children?: { text?: string }[] } | undefined) {
-  return (value?.children ?? []).map((c) => c.text ?? "").join("");
+function blockPlainText(value: { children?: unknown[] } | undefined) {
+  return (value?.children ?? [])
+    .map((child) => {
+      if (typeof child !== "object" || child === null || !("text" in child)) return "";
+      return typeof child.text === "string" ? child.text : "";
+    })
+    .join("");
 }
 
 export const portableTextComponents: PortableTextComponents = {
