@@ -3,15 +3,15 @@
     "features": "Fonctionnalités",
     "blog": "Blog",
     "contact": "Contact",
-    "download": "Télécharger l'app"
+    "download": "Télécharger sur l'App Store"
   },
   "hero": {
-    "badge": "Bientôt sur App Store & Google Play",
+    "badge": "Disponible sur l'App Store",
     "title": "Pilotez votre cuisine. Pas seulement votre menu.",
     "subtitle": "KitchFlow offre aux gérants de restaurants et aux équipes une application puissante pour gérer stocks, équipes, tâches, déchets et fournisseurs — au même endroit.",
-    "ctaPrimary": "Rejoindre la liste d'attente",
+    "ctaPrimary": "Télécharger sur l'App Store",
     "ctaSecondary": "Voir comment ça marche",
-    "social": "Soyez les premiers informés"
+    "social": "Utilisé par des cuisines en Suède"
   },
   "problem": {
     "label": "Le problème",
@@ -55,18 +55,16 @@
       "any": "Toute entreprise"
     }
   },
-  "waitlist": {
-    "title": "Soyez les premiers informés du lancement",
-    "placeholder": "vous@cuisine.com",
-    "cta": "Rejoindre",
-    "success": "Vous êtes inscrit·e ! Nous vous tiendrons informé·e.",
-    "privacy": "🔒 Vie privée respectée. Désinscription à tout moment."
+  "download": {
+    "title": "Téléchargez KitchFlow aujourd'hui",
+    "subtitle": "Gérez votre cuisine plus intelligemment — directement depuis votre téléphone.",
+    "cta": "Télécharger sur l'App Store"
   },
   "footer": {
     "tagline": "La plateforme tout-en-un pour les opérations en cuisine",
     "privacy": "Confidentialité",
     "rights": "Tous droits réservés.",
-    "available": "Bientôt disponible sur App Store & Google Play"
+    "available": "Disponible sur l'App Store"
   },
   "blog": {
     "title": "Insights cuisine",
