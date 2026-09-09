@@ -13,7 +13,13 @@ const fullNames: Record<Lang, string> = {
   ar: "العربية",
 };
 
-export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
+export function LanguageSwitcher({
+  compact = false,
+  dropUp = false,
+}: {
+  compact?: boolean;
+  dropUp?: boolean;
+}) {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -42,7 +48,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   }, [open]);
 
   return (
-    <div className="relative" onClick={(e) => e.stopPropagation()}>
+    <div className="relative z-[80]" onClick={(e) => e.stopPropagation()}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -51,17 +57,24 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
           compact && "border-transparent hover:border-border",
         )}
         aria-label="Change language"
+        aria-expanded={open}
       >
         <Globe className="h-4 w-4" />
         <span>{labels[current]}</span>
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-44 rounded-2xl border border-border bg-popover shadow-lift overflow-hidden z-50">
+        <div
+          className={cn(
+            "absolute end-0 w-44 rounded-2xl border border-border bg-popover shadow-lift overflow-hidden z-[200]",
+            dropUp ? "bottom-full mb-2" : "top-full mt-2",
+          )}
+        >
           {SUPPORTED_LANGS.map((lang) => (
             <button
               key={lang}
+              type="button"
               onClick={() => handleLanguageChange(lang)}
-              className="flex w-full items-center justify-between px-4 py-2.5 text-sm hover:bg-muted text-left"
+              className="flex w-full items-center justify-between px-4 py-2.5 text-sm hover:bg-muted text-start"
             >
               <span>{fullNames[lang]}</span>
               {current === lang && <Check className="h-4 w-4 text-primary" />}

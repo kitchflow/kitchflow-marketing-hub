@@ -31,12 +31,30 @@
     "label": "Fonctionnalités",
     "title": "Tout ce dont votre cuisine a besoin. Rien de superflu.",
     "list": {
-      "inventory": { "title": "Stock intelligent", "desc": "Scan QR, alertes stock bas" },
-      "waste": { "title": "Gestion des déchets", "desc": "Enregistrez, suivez, analysez les coûts" },
-      "tasks": { "title": "Gestion des tâches", "desc": "Assignez, suivez, responsabilisez" },
-      "supplier": { "title": "Fournisseurs & listes", "desc": "Générées depuis le stock" },
-      "staff": { "title": "Équipe & plannings", "desc": "Invitez par code, gérez les shifts" },
-      "logs": { "title": "Journal d'activité", "desc": "Traçabilité totale, transparence" }
+      "inventory": {
+        "title": "Stock intelligent",
+        "desc": "Scan QR, alertes stock bas"
+      },
+      "waste": {
+        "title": "Gestion des déchets",
+        "desc": "Enregistrez, suivez, analysez les coûts"
+      },
+      "tasks": {
+        "title": "Gestion des tâches",
+        "desc": "Assignez, suivez, responsabilisez"
+      },
+      "supplier": {
+        "title": "Fournisseurs & listes",
+        "desc": "Générées depuis le stock"
+      },
+      "staff": {
+        "title": "Équipe & plannings",
+        "desc": "Invitez par code, gérez les shifts"
+      },
+      "logs": {
+        "title": "Journal d'activité",
+        "desc": "Traçabilité totale, transparence"
+      }
     }
   },
   "how": {
@@ -74,7 +92,14 @@
     "tagline": "La plateforme tout-en-un pour les opérations en cuisine",
     "privacy": "Confidentialité",
     "rights": "Tous droits réservés.",
-    "available": "Disponible sur l'App Store"
+    "available": "Disponible sur l'App Store",
+    "links": "Liens",
+    "connect": "Réseaux",
+    "inventory": "Stocks",
+    "waste": "Gaspillage",
+    "staff": "Équipe",
+    "tasks": "Tâches",
+    "made": "Fait avec soin"
   },
   "blog": {
     "title": "Insights cuisine",
@@ -109,6 +134,254 @@
         "bug": "Signaler un bug",
         "other": "Autre"
       }
+    }
+  },
+  "faq": {
+    "label": "Support",
+    "title": "Questions fréquentes",
+    "subtitle": "Réponses rapides sur KitchFlow, ses outils cuisine, et où télécharger l'app.",
+    "ready": "Prêt à commencer ? Téléchargez KitchFlow sur l'",
+    "appStore": "App Store",
+    "items": [
+      {
+        "q": "Qu'est-ce que KitchFlow ?",
+        "a": "KitchFlow est une application de gestion des opérations en cuisine pour restaurants et cafés. Elle réunit stocks, suivi du gaspillage, planning d'équipe, tâches et fournisseurs dans une seule app iOS."
+      },
+      {
+        "q": "Pour qui est conçu KitchFlow ?",
+        "a": "Pour les gérants de restaurant, propriétaires de café, traiteurs et équipes food-service qui veulent les opérations quotidiennes au même endroit."
+      },
+      {
+        "q": "KitchFlow gère-t-il les stocks du restaurant ?",
+        "a": "Oui. Inventaires, alertes de stock bas, réception par QR et listes de courses basées sur les niveaux de stock."
+      },
+      {
+        "q": "KitchFlow suit-il le gaspillage alimentaire ?",
+        "a": "Oui. Vous pouvez enregistrer les pertes par motif, y associer un coût et voir les tendances."
+      },
+      {
+        "q": "KitchFlow inclut-il le planning du personnel ?",
+        "a": "Oui. Invitez l'équipe par code, gérez les shifts et clarifiez les responsabilités."
+      },
+      {
+        "q": "KitchFlow est-il disponible sur iPhone ?",
+        "a": "Oui. KitchFlow est disponible maintenant sur l'App Store pour iPhone."
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "KitchFlow – Kitchen Ops",
+    "h1": "Une vision claire de vos opérations en cuisine.",
+    "intro": "KitchFlow est une application de gestion des opérations en cuisine pour restaurants et cafés qui combine stocks, suivi du gaspillage, planning, tâches et fournisseurs.",
+    "download": "Télécharger sur l'App Store",
+    "explore": "Voir les fonctionnalités",
+    "phoneLabel": "Vue quotidienne",
+    "togetherLabel": "Conçu pour travailler ensemble",
+    "togetherTitle": "Cinq flux essentiels. Une seule app cuisine.",
+    "togetherBody": "KitchFlow est une application de gestion des opérations en cuisine pour restaurants et cafés qui combine stocks, suivi du gaspillage, planning, tâches et fournisseurs.",
+    "learnMore": "En savoir plus",
+    "serviceLabel": "Pensé pour le service",
+    "serviceTitle": "Moins d'admin. Plus de cuisine.",
+    "serviceBody": "Gardez le travail quotidien visible pour toute l'équipe, au lieu de le disperser entre cahiers, tableurs et chats.",
+    "whoLabel": "Pour qui",
+    "whoTitle": "Fait pour les équipes proches du terrain.",
+    "whoBody": "KitchFlow s'adresse aux propriétaires de café, gérants de restaurant, chefs de cuisine et petites équipes food-service qui ont besoin d'une vue opérationnelle partagée.",
+    "availableLabel": "Disponible aujourd'hui",
+    "availableTitle": "KitchFlow pour iPhone",
+    "availableBody": "Téléchargez l'app sur l'App Store et réunissez stocks, gaspillage, équipe, tâches et fournisseurs dans un seul flux. Android n'est pas encore disponible.",
+    "viewStore": "Voir sur l'App Store",
+    "capabilities": {
+      "inventory": {
+        "title": "Gestion des stocks",
+        "description": "Comptez le stock, fixez les seuils de réassort et réceptionnez plus simplement."
+      },
+      "waste": {
+        "title": "Suivi du gaspillage",
+        "description": "Enregistrez les pertes avec motif et coût pour rendre visibles les pertes récurrentes."
+      },
+      "staff": {
+        "title": "Planning du personnel",
+        "description": "Invitez l'équipe, publiez les shifts et clarifiez la couverture du service."
+      },
+      "tasks": {
+        "title": "Tâches de cuisine",
+        "description": "Donnez à l'ouverture, la fermeture et la mise en place un responsable clair."
+      },
+      "supplier": {
+        "title": "Gestion fournisseurs",
+        "description": "Transformez le stock bas en listes de courses utiles pour vos fournisseurs."
+      }
+    }
+  },
+  "featurePages": {
+    "common": {
+      "entity": "KitchFlow – Kitchen Ops",
+      "download": "Télécharger sur l'App Store",
+      "faq": "FAQ",
+      "getTitle": "Obtenir KitchFlow",
+      "getBody": "KitchFlow est disponible maintenant sur l'App Store pour iPhone.",
+      "blogLink": "Lire les guides cuisine",
+      "aboutLink": "À propos de KitchFlow"
+    },
+    "inventory": {
+      "h1": "Gestion des stocks restaurant",
+      "definition": "La gestion des stocks KitchFlow aide les cuisines à compter le stock, fixer les seuils de réassort, réceptionner par QR et transformer le stock bas en listes de courses.",
+      "problemTitle": "Le problème des stocks",
+      "problemBody": "Tomber en rupture en service coûte des couverts. Surcommander immobilise du cash et remplit la chambre froide de produits qui se perdent. Les tableurs tiennent jusqu'à ce que plusieurs personnes les mettent à jour en même temps.",
+      "featuresTitle": "Ce que fait le stock KitchFlow",
+      "features": [
+        {
+          "title": "Comptes et niveaux de par",
+          "body": "Enregistrez les quantités et les seuils de réassort pour savoir quoi commander avant le service."
+        },
+        {
+          "title": "Réception QR",
+          "body": "Scannez les livraisons pour mettre à jour le stock plus vite qu'en saisissant chaque ligne."
+        },
+        {
+          "title": "Listes depuis le stock",
+          "body": "Construisez les listes fournisseurs à partir des articles sous le seuil, sans deviner de mémoire."
+        }
+      ],
+      "whoTitle": "Pour qui",
+      "whoBody": "Propriétaires de café, gérants de restaurant et chefs de cuisine qui ont besoin d'un stock visible pour toute l'équipe, pas enfermé dans un carnet.",
+      "faqs": [
+        {
+          "q": "Que fait la gestion des stocks KitchFlow ?",
+          "a": "Elle suit le stock disponible, les seuils de réassort, la réception et les listes de courses dans l'app d'exploitation KitchFlow."
+        },
+        {
+          "q": "Convient-elle aux petits cafés ?",
+          "a": "Oui. Les petits cafés peuvent commencer par les articles les plus coûteux puis élargir avec le menu."
+        }
+      ],
+      "relatedBlog": "Ouvrir un petit café : guide stocks",
+      "screenshotLabel": "Stocks"
+    },
+    "waste": {
+      "h1": "Suivi du gaspillage alimentaire pour restaurants",
+      "definition": "Le suivi du gaspillage KitchFlow permet d'enregistrer les pertes par motif, de voir l'impact coût et de corriger les commandes ou la mise en place qui créent le gaspillage.",
+      "problemTitle": "Pourquoi le gaspillage reste invisible",
+      "problemBody": "Le gaspillage part souvent un peu à la fois : pâtisserie invendue, lait trop chauffé, erreurs de prep. Sans journal, on devine au lieu de corriger les plus grosses sources.",
+      "featuresTitle": "Ce que fait le suivi gaspillage KitchFlow",
+      "features": [
+        {
+          "title": "Motifs étiquetés",
+          "body": "Étiquetez périmé, erreur de prep, surproduction ou retours pour voir les schémas vite."
+        },
+        {
+          "title": "Coût associé",
+          "body": "Liez les entrées de gaspillage au coût pour voir l'impact marge, pas seulement le volume."
+        },
+        {
+          "title": "Habitudes café",
+          "body": "Convient aux vitrines, produits laitiers et bars espresso, pas seulement aux grandes cuisines."
+        }
+      ],
+      "whoTitle": "Pour qui",
+      "whoBody": "Restaurants et cafés qui gèrent déjà les stocks mais perdent encore de la marge à cause d'un gaspillage silencieux.",
+      "faqs": [
+        {
+          "q": "KitchFlow peut-il suivre le gaspillage restaurant ?",
+          "a": "Oui. Enregistrez le gaspillage par motif avec coût et consultez les tendances dans KitchFlow."
+        },
+        {
+          "q": "Faut-il un logiciel dès le premier jour ?",
+          "a": "Un journal papier ou tableur suffit au début. Passez à KitchFlow quand la saisie manuelle commence à glisser."
+        }
+      ],
+      "relatedBlog": "Réduire le gaspillage en café",
+      "screenshotLabel": "Gaspillage"
+    },
+    "staff": {
+      "h1": "Planning du personnel restaurant",
+      "definition": "Le planning KitchFlow aide les managers à inviter l'équipe, publier les shifts et clarifier les responsabilités sur les périodes de service.",
+      "problemTitle": "Le problème de coordination",
+      "problemBody": "Les doubles bookings et absences viennent souvent des chats et échanges informels. Le planning a besoin d'une seule source de vérité.",
+      "featuresTitle": "Ce que fait le planning KitchFlow",
+      "features": [
+        {
+          "title": "Invitation par code",
+          "body": "Ajoutez du personnel sans long onboarding pour garder le roster à jour."
+        },
+        {
+          "title": "Visibilité des shifts",
+          "body": "Publiez qui est présent quand, pour que prep et service soient clairs."
+        },
+        {
+          "title": "Lié aux ops cuisine",
+          "body": "Le planning côtoie tâches et stocks, pas un outil isolé."
+        }
+      ],
+      "whoTitle": "Pour qui",
+      "whoBody": "Managers d'équipes multi-personnes en café ou restaurant qui veulent une couverture sans nouveau tableur.",
+      "faqs": [
+        {
+          "q": "KitchFlow inclut-il le planning du personnel ?",
+          "a": "Oui. Invitez l'équipe, gérez les shifts et gardez le roster dans la même app d'exploitation."
+        }
+      ],
+      "screenshotLabel": "Planning"
+    },
+    "tasks": {
+      "h1": "Gestion des tâches de cuisine",
+      "definition": "La gestion des tâches KitchFlow transforme ouverture, fermeture et mise en place en checklists avec responsables clairs.",
+      "problemTitle": "Quand les tâches restent dans une tête",
+      "problemBody": "Si une seule personne connaît la liste d'ouverture, la qualité baisse en son absence. Des tâches écrites avec responsables corrigent ça.",
+      "featuresTitle": "Ce que font les tâches KitchFlow",
+      "features": [
+        {
+          "title": "Listes d'ouverture et fermeture",
+          "body": "Standardisez les routines de shift pour que le même travail soit fait chaque jour."
+        },
+        {
+          "title": "Responsable nommé",
+          "body": "Attachez une personne à chaque tâche pour que rien ne reste à 'quelqu'un s'en occupera'."
+        },
+        {
+          "title": "Visibilité d'activité",
+          "body": "Voyez ce qui a été fait quand, à côté des stocks et du gaspillage."
+        }
+      ],
+      "whoTitle": "Pour qui",
+      "whoBody": "Cuisines qui ont besoin de standards stables de prep et nettoyage avec une équipe tournante.",
+      "faqs": [
+        {
+          "q": "Les managers peuvent-ils assigner des tâches ?",
+          "a": "Oui. Les managers peuvent assigner des checklists et suivre l'avancement dans KitchFlow."
+        }
+      ],
+      "screenshotLabel": "Tâches"
+    },
+    "supplier": {
+      "h1": "Gestion fournisseurs restaurant",
+      "definition": "Les outils fournisseurs KitchFlow aident à transformer le stock sous seuil en listes de courses, au lieu de commander de mémoire.",
+      "problemTitle": "Commander sans signal de stock",
+      "problemBody": "Quand la commande est déconnectée des comptes, l'équipe achète au feeling. Résultat : surstock sur les lents, ruptures sur les forts.",
+      "featuresTitle": "Ce que font les listes fournisseurs KitchFlow",
+      "features": [
+        {
+          "title": "Listes depuis l'inventaire",
+          "body": "Générez les besoins d'achat à partir des articles sous seuil de réassort."
+        },
+        {
+          "title": "Moins d'oublis",
+          "body": "Gardez lait, gobelets et secs sur la même liste opérationnelle déjà utilisée par l'équipe."
+        },
+        {
+          "title": "Un seul flux ops",
+          "body": "La commande côtoie réception, gaspillage et tâches dans KitchFlow."
+        }
+      ],
+      "whoTitle": "Pour qui",
+      "whoBody": "Opérateurs qui comptent déjà le stock et veulent que les achats suivent ces chiffres.",
+      "faqs": [
+        {
+          "q": "KitchFlow aide-t-il avec les fournisseurs ?",
+          "a": "Oui. Les listes de courses peuvent être construites depuis les niveaux de stock pour coller aux besoins réels."
+        }
+      ],
+      "screenshotLabel": "Courses"
     }
   }
 }

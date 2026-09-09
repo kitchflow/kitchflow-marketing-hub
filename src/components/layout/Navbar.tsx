@@ -172,8 +172,8 @@ export function Navbar() {
       {/* Mobile drawer */}
       <div
         className={cn(
-          "md:hidden overflow-y-auto transition-all duration-300 ease-out border-b border-border bg-background",
-          open ? "max-h-[calc(100vh-4rem)]" : "max-h-0 overflow-hidden",
+          "md:hidden border-b border-border bg-background transition-all duration-300 ease-out",
+          open ? "max-h-[calc(100vh-4rem)] overflow-y-auto overflow-x-visible" : "max-h-0 overflow-hidden",
         )}
       >
         <div className="px-5 py-4 flex flex-col gap-2">
@@ -212,8 +212,8 @@ export function Navbar() {
           <Link to="/contact" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.contact")}
           </Link>
-          <div className="flex items-center justify-between pt-2">
-            <LanguageSwitcher />
+          <div className="relative z-[70] flex items-center justify-between overflow-visible pt-2">
+            <LanguageSwitcher dropUp />
             <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
               <Button size="sm">{t("nav.download")}</Button>
             </a>
