@@ -1,9 +1,14 @@
 {
   "nav": {
     "features": "Fonctionnalités",
+    "about": "À propos",
+    "faq": "FAQ",
     "blog": "Blog",
     "contact": "Contact",
-    "download": "Télécharger sur l'App Store"
+    "download": "Télécharger sur l'App Store",
+    "viewAllFeatures": "Voir toutes les fonctionnalités",
+    "primaryLabel": "Navigation principale",
+    "menuLabel": "Ouvrir le menu de navigation"
   },
   "hero": {
     "badge": "Disponible sur l'App Store",
