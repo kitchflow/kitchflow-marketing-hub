@@ -172,8 +172,8 @@ export function Navbar() {
       {/* Mobile drawer */}
       <div
         className={cn(
-          "md:hidden overflow-hidden transition-all duration-300 ease-out border-b border-border bg-background",
-          open ? "max-h-96" : "max-h-0",
+          "md:hidden overflow-y-auto transition-all duration-300 ease-out border-b border-border bg-background",
+          open ? "max-h-[calc(100vh-4rem)]" : "max-h-0 overflow-hidden",
         )}
       >
         <div className="px-5 py-4 flex flex-col gap-2">
@@ -206,10 +206,10 @@ export function Navbar() {
           <Link to="/" hash="faq" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.faq")}
           </Link>
-          <Link to="/blog" className="py-2 text-base font-medium">
+          <Link to="/blog" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.blog")}
           </Link>
-          <Link to="/contact" className="py-2 text-base font-medium">
+          <Link to="/contact" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.contact")}
           </Link>
           <div className="flex items-center justify-between pt-2">
