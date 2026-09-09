@@ -148,6 +148,6 @@ Non. Un tableur suffit pour une petite équipe. Passez à un outil dédié quand
 
 Choisissez une seule action cette semaine. Affichez la règle FIFO à la vitrine et commencez à étiqueter chaque perte par raison. Deux semaines de données vous diront si l'argent part en surproduction, en périssement, en erreur de préparation ou en retours, ce qui fait toute la différence entre deviner et corriger.
 
-Quand la saisie à la main commencera à faiblir, [rejoignez la liste d'attente KitchFlow](/) et laissez le suivi se remplir tout seul.
+Quand la saisie à la main commencera à faiblir, [téléchargez KitchFlow sur l'App Store](https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252) et laissez le suivi se remplir tout seul.
 
 **Sources :** ReFED, https://refed.org/food-waste/the-problem/ (consulté le 31 août 2026). MarketMan, https://www.marketman.com/blog/ways-to-reduce-food-waste-in-your-coffee-chain (consulté le 31 août 2026).

@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Camera, Copy, Twitter, Linkedin } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import { toast } from "sonner";
@@ -15,10 +15,14 @@ import {
   DEFAULT_OG_IMAGE,
   OG_IMAGE_WIDTH,
   OG_IMAGE_HEIGHT,
+  APP_STORE_URL,
   socialMetaTags,
 } from "@/lib/seo";
 
 type LoaderData = {
+  post: Post;
+  related: Post[];
+  alternates: PostTranslation[];
   title: string;
   socialTitle: string;
   description: string;
@@ -26,9 +30,9 @@ type LoaderData = {
   imageAlt: string;
   url: string;
   publishedAt: string;
+  modifiedAt: string;
   authorName: string;
   locale: string;
-  alternates: PostTranslation[];
 };
 
 const LOCALE_BY_LANG: Record<string, string> = {
@@ -37,7 +41,6 @@ const LOCALE_BY_LANG: Record<string, string> = {
   ar: "ar_AR",
 };
 
-/** Social scrapers often reject WebP — force JPEG at 1200x630. */
 function ogImageUrl(coverImage: Post["coverImage"]): string | null {
   if (!coverImage?.asset) return null;
   return urlFor(coverImage)
@@ -59,7 +62,6 @@ async function loadPost(slug: string): Promise<Post | null> {
 
 async function loadTranslations(post: Post): Promise<PostTranslation[]> {
   if (!post.translationKey) return [];
-
   try {
     return (
       (await client.fetch<PostTranslation[]>(postTranslationsQuery, {
@@ -75,39 +77,41 @@ export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }): Promise<LoaderData> => {
     const url = `${SITE_URL}/blog/${params.slug}`;
     const post = await loadPost(params.slug);
+    if (!post) throw notFound();
 
-    if (!post) {
-      return {
-        title: "Article | KitchFlow",
-        socialTitle: "KitchFlow Blog",
-        description: "Practical guides for kitchen and cafe operators from KitchFlow.",
-        image: DEFAULT_OG_IMAGE,
-        imageAlt: "KitchFlow",
-        url,
-        publishedAt: new Date().toISOString(),
-        authorName: "KitchFlow Team",
-        locale: "en_US",
-        alternates: [],
-      };
-    }
+    const [alternates, related] = await Promise.all([
+      loadTranslations(post),
+      client
+        .fetch<Post[]>(relatedPostsQuery, {
+          slug: params.slug,
+          category: post.category,
+          language: post.language,
+        })
+        .catch(() => [] as Post[]),
+    ]);
 
-    const alternates = await loadTranslations(post);
     const socialTitle = (post.seoTitle || post.title).trim();
-    const description = (post.seoDescription || post.excerpt || "").trim().slice(0, 160);
+    const description = (post.seoDescription || post.excerpt || "")
+      .trim()
+      .slice(0, 160);
     const image = ogImageUrl(post.coverImage) ?? DEFAULT_OG_IMAGE;
     const imageAlt = post.coverImage?.alt?.trim() || `${socialTitle} — KitchFlow`;
 
     return {
+      post,
+      related: related ?? [],
+      alternates,
       title: `${socialTitle} | KitchFlow`,
       socialTitle,
-      description: description || "Practical guides for kitchen and cafe operators from KitchFlow.",
+      description:
+        description || "Practical guides for kitchen and cafe operators from KitchFlow.",
       image,
       imageAlt,
       url,
       publishedAt: post.publishedAt,
+      modifiedAt: post._updatedAt || post.publishedAt,
       authorName: post.author?.name ?? "KitchFlow Team",
       locale: LOCALE_BY_LANG[post.language] ?? "en_US",
-      alternates,
     };
   },
   head: ({ loaderData }) => {
@@ -120,11 +124,62 @@ export const Route = createFileRoute("/blog/$slug")({
       imageAlt,
       url,
       publishedAt,
+      modifiedAt,
       authorName,
       locale,
       alternates,
+      post,
     } = loaderData;
-    const defaultAlternate = alternates.find((item) => item.language === "en") ?? alternates[0];
+    const defaultAlternate =
+      alternates.find((item) => item.language === "en") ?? alternates[0];
+
+    const breadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Blog",
+          item: `${SITE_URL}/blog`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: socialTitle,
+          item: url,
+        },
+      ],
+    };
+
+    const article = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: socialTitle,
+      description,
+      image,
+      datePublished: publishedAt,
+      dateModified: modifiedAt,
+      author: { "@type": "Person", name: authorName },
+      publisher: {
+        "@type": "Organization",
+        name: "KitchFlow",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/kitchflow-logo.svg`,
+        },
+      },
+      mainEntityOfPage: { "@type": "WebPage", "@id": url },
+      inLanguage: locale.replace("_", "-"),
+      articleSection: post.category,
+    };
 
     return {
       meta: socialMetaTags({
@@ -157,25 +212,8 @@ export const Route = createFileRoute("/blog/$slug")({
           : []),
       ],
       scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: socialTitle,
-            description,
-            image,
-            datePublished: publishedAt,
-            author: { "@type": "Person", name: authorName },
-            publisher: {
-              "@type": "Organization",
-              name: "KitchFlow",
-              url: SITE_URL,
-            },
-            mainEntityOfPage: { "@type": "WebPage", "@id": url },
-            inLanguage: locale.replace("_", "-"),
-          }),
-        },
+        { type: "application/ld+json", children: JSON.stringify(article) },
+        { type: "application/ld+json", children: JSON.stringify(breadcrumb) },
       ],
     };
   },
@@ -195,90 +233,22 @@ function formatDate(d: string, locale: string) {
 }
 
 function BlogPostPage() {
-  const { slug } = Route.useParams();
+  const { post, related, alternates, url } = Route.useLoaderData();
   const { t, i18n } = useTranslation();
   const { setTranslations } = useBlogTranslations();
-  const [post, setPost] = useState<Post | null>(null);
-  const [related, setRelated] = useState<Post[]>([]);
-  const [status, setStatus] = useState<"loading" | "ready" | "missing">("loading");
 
   useEffect(() => {
-    let mounted = true;
-    setStatus("loading");
-    setPost(null);
-    setRelated([]);
-
-    client
-      .fetch<Post | null>(postBySlugQuery, { slug })
-      .then(async (data) => {
-        if (!mounted) return;
-
-        if (!data) {
-          setPost(null);
-          setTranslations(null);
-          setStatus("missing");
-          return;
-        }
-
-        setPost(data);
-        setStatus("ready");
-        const translations = await loadTranslations(data);
-        if (mounted) setTranslations(translations);
-
-        client
-          .fetch<Post[]>(relatedPostsQuery, {
-            slug,
-            category: data.category,
-            language: data.language,
-          })
-          .then((rel) => mounted && setRelated(rel ?? []))
-          .catch(() => mounted && setRelated([]));
-      })
-      .catch(() => {
-        if (!mounted) return;
-        setPost(null);
-        setTranslations(null);
-        setStatus("missing");
-      });
-
-    return () => {
-      mounted = false;
-      setTranslations(null);
-    };
-  }, [slug, setTranslations]);
-
-  if (status === "loading") {
-    return (
-      <div className="mx-auto max-w-3xl px-5 py-32 text-center">
-        <p className="text-muted-foreground">{t("blog.loading")}</p>
-      </div>
-    );
-  }
-
-  if (status === "missing" || !post) {
-    return (
-      <div className="mx-auto max-w-3xl px-5 py-32 text-center">
-        <p className="text-muted-foreground">{t("blog.notFound")}</p>
-        <Link
-          to="/blog"
-          className="mt-6 inline-flex text-sm font-medium text-primary hover:underline"
-        >
-          {t("blog.back")}
-        </Link>
-      </div>
-    );
-  }
+    setTranslations(alternates);
+    return () => setTranslations(null);
+  }, [alternates, setTranslations]);
 
   const cover = post.coverImage?.asset
     ? urlFor(post.coverImage).width(1600).auto("format").url()
     : null;
 
-  const shareUrl =
-    typeof window !== "undefined" ? window.location.href : `${SITE_URL}/blog/${slug}`;
-
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(url);
       toast.success("Link copied");
     } catch {
       toast.error("Could not copy");
@@ -288,12 +258,23 @@ function BlogPostPage() {
   return (
     <article className="py-12 lg:py-16">
       <div className="mx-auto max-w-3xl px-5 lg:px-8">
-        <Link
-          to="/blog"
-          className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition"
-        >
-          {t("blog.back")}
-        </Link>
+        <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link to="/" className="hover:text-foreground transition">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link to="/blog" className="hover:text-foreground transition">
+                {t("nav.blog")}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-foreground line-clamp-1">{post.title}</li>
+          </ol>
+        </nav>
 
         <div className="mt-8">
           <span className="inline-block text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft rounded-full px-2.5 py-1">
@@ -309,7 +290,9 @@ function BlogPostPage() {
             </span>
             <span className="font-medium text-foreground">{post.author?.name}</span>
             <span>·</span>
-            <span>{formatDate(post.publishedAt, i18n.language)}</span>
+            <time dateTime={post.publishedAt}>
+              {formatDate(post.publishedAt, i18n.language)}
+            </time>
             {post.readTime && (
               <>
                 <span>·</span>
@@ -326,7 +309,11 @@ function BlogPostPage() {
           style={{ aspectRatio: "16 / 9" }}
         >
           {cover ? (
-            <img src={cover} alt={post.title} className="h-full w-full object-cover" />
+            <img
+              src={cover}
+              alt={post.coverImage?.alt || post.title}
+              className="h-full w-full object-cover"
+            />
           ) : (
             <div className="h-full w-full flex items-center justify-center text-muted-foreground">
               <Camera className="h-12 w-12" strokeWidth={1.5} />
@@ -339,15 +326,33 @@ function BlogPostPage() {
             <PortableText value={post.body} components={portableTextComponents} />
           ) : (
             post.excerpt && (
-              <p className="text-xl leading-[1.7] text-foreground/85 font-medium">{post.excerpt}</p>
+              <p className="text-xl leading-[1.7] text-foreground/85 font-medium">
+                {post.excerpt}
+              </p>
             )
           )}
         </div>
 
-        <div className="mt-14 pt-6 border-t border-border flex items-center gap-3">
-          <span className="text-sm font-medium text-muted-foreground mr-2">{t("blog.share")}:</span>
+        <div className="mt-10 rounded-2xl border border-border bg-primary-soft/40 p-6">
+          <p className="text-[17px] leading-relaxed text-foreground/90">
+            {t("blog.appCta")}
+          </p>
           <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`}
+            href={APP_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex text-sm font-semibold text-primary hover:underline"
+          >
+            {t("nav.download")}
+          </a>
+        </div>
+
+        <div className="mt-14 pt-6 border-t border-border flex items-center gap-3">
+          <span className="text-sm font-medium text-muted-foreground mr-2">
+            {t("blog.share")}:
+          </span>
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(url)}`}
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:bg-muted transition"
@@ -356,7 +361,7 @@ function BlogPostPage() {
             <Twitter className="h-5 w-5" />
           </a>
           <a
-            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:bg-muted transition"

@@ -6,7 +6,7 @@ export const allPostsQuery = `*[_type == "post" && language == $lang] | order(pu
 }`;
 
 export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0] {
-  _id, title, slug, excerpt, coverImage, category,
+  _id, _updatedAt, title, slug, excerpt, coverImage, category,
   publishedAt, readTime, body, seoTitle, seoDescription, language, translationKey,
   author->{ name, avatar, bio }
 }`;

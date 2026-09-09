@@ -1,4 +1,14 @@
+# Public marketing site — allow major search / AI crawlers
 User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 Sitemap: https://kitchflowapp.com/sitemap.xml

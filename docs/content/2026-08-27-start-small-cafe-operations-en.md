@@ -207,7 +207,7 @@ Use this as a worksheet. Copy into Sheets or Notion, or run it in KitchFlow as r
 - [ ] If counts take 90+ minutes, test a digital system
 - [ ] Export one month of waste data, top 3 items by cost
 - [ ] Document SOPs for the two messiest tasks
-- [ ] Join the [KitchFlow waitlist](/) if you want inventory, staff, and waste in one app
+- [ ] [Download KitchFlow on the App Store](https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252) if you want inventory, staff, and waste in one app
 
 ## FAQ
 
@@ -233,7 +233,7 @@ Log every discard with a reason for two weeks, enforce FIFO in the pastry case, 
 
 ---
 
-**Next step:** Pick one area this week (inventory, staff, or waste) and measure it for 14 days before you buy new equipment or rewrite the menu. If you want inventory, scheduling, waste, and tasks in one place, [join the KitchFlow waitlist](/) and we will notify you at launch.
+**Next step:** Pick one area this week (inventory, staff, or waste) and measure it for 14 days before you buy new equipment or rewrite the menu. If you want inventory, scheduling, waste, and tasks in one place, [download KitchFlow on the App Store](https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252). KitchFlow is available now.
 
 ---
 

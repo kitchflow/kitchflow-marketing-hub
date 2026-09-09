@@ -149,6 +149,6 @@ No. A spreadsheet works for a small team. Move to a dedicated tool when manual l
 
 Pick one thing this week. Post the FIFO rule at the pastry case and start tagging every discard by reason. Two weeks of tags will tell you whether the money is going out as overproduction, spoilage, prep error, or returns, which is the difference between guessing and fixing.
 
-When hand-logging starts slipping, [join the KitchFlow waitlist](/) and let the waste log fill itself in.
+When hand-logging starts slipping, [download KitchFlow on the App Store](https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252) and let the waste log fill itself in.
 
 **Sources:** ReFED, https://refed.org/food-waste/the-problem/ (accessed 31 August 2026). MarketMan, https://www.marketman.com/blog/ways-to-reduce-food-waste-in-your-coffee-chain (accessed 31 August 2026).

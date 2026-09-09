@@ -11,7 +11,7 @@
     "subtitle": "KitchFlow gives restaurant managers and kitchen teams one powerful app to manage inventory, staff, tasks, waste, and suppliers — all in one place.",
     "ctaPrimary": "Download on the App Store",
     "ctaSecondary": "See How It Works",
-    "social": "Trusted by kitchens across Sweden"
+    "social": "Available now on the App Store for iPhone"
   },
   "problem": {
     "label": "The Problem",
@@ -44,7 +44,12 @@
   },
   "screens": {
     "title": "See KitchFlow in action",
-    "labels": { "inventory": "Inventory", "schedule": "Schedule", "waste": "Waste", "shopping": "Shopping List" }
+    "labels": {
+      "inventory": "KitchFlow restaurant inventory dashboard",
+      "schedule": "KitchFlow employee scheduling dashboard",
+      "waste": "KitchFlow food waste tracking screen",
+      "shopping": "KitchFlow supplier shopping list screen"
+    }
   },
   "who": {
     "title": "Built for every kitchen",
@@ -76,7 +81,8 @@
     "minRead": "min read",
     "empty": "No articles in this language yet.",
     "loading": "Loading…",
-    "notFound": "This article could not be found."
+    "notFound": "This article could not be found.",
+    "appCta": "KitchFlow is available now on the App Store. Manage inventory, waste, staff schedules, tasks, and suppliers from one kitchen ops app."
   },
   "contact": {
     "title": "Get in Touch",

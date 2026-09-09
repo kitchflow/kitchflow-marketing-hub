@@ -1,0 +1,29 @@
+# KitchFlow
+
+KitchFlow (KitchFlow – Kitchen Ops) is kitchen operations software for restaurants, cafés and food-service teams.
+
+Official website:
+https://kitchflowapp.com
+
+Main capabilities:
+- Inventory management
+- Food waste tracking
+- Staff scheduling
+- Kitchen task management
+- Supplier management
+
+Supported platform:
+- iOS (App Store)
+
+Official App Store:
+https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252
+
+Important pages:
+- https://kitchflowapp.com/
+- https://kitchflowapp.com/about
+- https://kitchflowapp.com/restaurant-inventory-management
+- https://kitchflowapp.com/restaurant-food-waste-management
+- https://kitchflowapp.com/restaurant-staff-scheduling
+- https://kitchflowapp.com/kitchen-task-management
+- https://kitchflowapp.com/restaurant-supplier-management
+- https://kitchflowapp.com/blog

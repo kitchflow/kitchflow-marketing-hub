@@ -9,6 +9,14 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+const FEATURE_HREFS: Partial<Record<string, string>> = {
+  inventory: "/restaurant-inventory-management",
+  waste: "/restaurant-food-waste-management",
+  tasks: "/kitchen-task-management",
+  supplier: "/restaurant-supplier-management",
+  staff: "/restaurant-staff-scheduling",
+};
+
 export function FeaturesSection() {
   const { t } = useTranslation();
   const features = [
@@ -33,27 +41,42 @@ export function FeaturesSection() {
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {features.map(({ Icon, key }, i) => (
-            <motion.div
-              key={key}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-              className="group rounded-2xl border border-border bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift relative overflow-hidden"
-            >
-              <span className="absolute left-0 top-0 h-full w-1 bg-primary scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-300" />
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                <Icon className="h-6 w-6" strokeWidth={2} />
-              </div>
-              <h3 className="mt-5 text-xl font-semibold">
-                {t(`features.list.${key}.title`)}
-              </h3>
-              <p className="mt-2 text-muted-foreground leading-relaxed">
-                {t(`features.list.${key}.desc`)}
-              </p>
-            </motion.div>
-          ))}
+          {features.map(({ Icon, key }, i) => {
+            const href = FEATURE_HREFS[key];
+            const body = (
+              <>
+                <span className="absolute left-0 top-0 h-full w-1 bg-primary scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-300" />
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary-soft text-primary">
+                  <Icon className="h-6 w-6" strokeWidth={2} />
+                </div>
+                <h3 className="mt-5 text-xl font-semibold">
+                  {t(`features.list.${key}.title`)}
+                </h3>
+                <p className="mt-2 text-muted-foreground leading-relaxed">
+                  {t(`features.list.${key}.desc`)}
+                </p>
+              </>
+            );
+
+            return (
+              <motion.div
+                key={key}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
+                className="group rounded-2xl border border-border bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift relative overflow-hidden"
+              >
+                {href ? (
+                  <a href={href} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl">
+                    {body}
+                  </a>
+                ) : (
+                  body
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

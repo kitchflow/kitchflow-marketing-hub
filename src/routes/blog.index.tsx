@@ -6,7 +6,6 @@ import { allPostsQuery } from "@/lib/queries";
 import { resolveLang } from "@/lib/i18n";
 import type { Post } from "@/types";
 import { BlogList } from "@/components/blog/BlogList";
-import { BlogListSkeleton } from "@/components/blog/BlogListSkeleton";
 import { SITE_URL, DEFAULT_OG_IMAGE, socialMetaTags } from "@/lib/seo";
 
 const TITLE = "Kitchen Insights | KitchFlow Blog";
@@ -16,6 +15,15 @@ const DESCRIPTION =
 const URL = `${SITE_URL}/blog`;
 
 export const Route = createFileRoute("/blog/")({
+  loader: async () => {
+    // Default English for crawlers / first paint; language switcher refetches client-side.
+    try {
+      const posts = await client.fetch<Post[]>(allPostsQuery, { lang: "en" });
+      return { posts: posts ?? [] };
+    } catch {
+      return { posts: [] as Post[] };
+    }
+  },
   head: () => ({
     meta: socialMetaTags({
       documentTitle: TITLE,
@@ -26,37 +34,38 @@ export const Route = createFileRoute("/blog/")({
       imageAlt: "KitchFlow blog — kitchen operations insights",
       type: "website",
     }),
-    links: [{ rel: "canonical", href: URL }],
+    links: [
+      { rel: "canonical", href: URL },
+      { rel: "alternate", type: "application/rss+xml", href: `${SITE_URL}/blog/feed.xml` },
+    ],
   }),
   component: BlogIndex,
 });
 
-const postsForLang = (items: Post[], lang: ReturnType<typeof resolveLang>) =>
-  items.filter((post) => post.language === lang);
-
 function BlogIndex() {
   const { t, i18n } = useTranslation();
   const lang = resolveLang(i18n.resolvedLanguage ?? i18n.language);
-  const [posts, setPosts] = useState<Post[] | null>(null);
+  const { posts: initialPosts } = Route.useLoaderData();
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
 
   useEffect(() => {
     let mounted = true;
-    setPosts(null);
+    if (lang === "en") {
+      setPosts(initialPosts);
+      return;
+    }
     client
       .fetch<Post[]>(allPostsQuery, { lang })
       .then((data) => {
-        if (!mounted) return;
-        setPosts(postsForLang(data ?? [], lang));
+        if (mounted) setPosts(data ?? []);
       })
-      .catch((err) => {
-        console.warn("Sanity fetch failed", err);
-        if (!mounted) return;
-        setPosts([]);
+      .catch(() => {
+        if (mounted) setPosts([]);
       });
     return () => {
       mounted = false;
     };
-  }, [lang]);
+  }, [lang, initialPosts]);
 
   return (
     <section className="py-16 lg:py-24">
@@ -68,7 +77,7 @@ function BlogIndex() {
           <p className="mt-4 text-lg text-muted-foreground">{t("blog.subtitle")}</p>
         </div>
 
-        {posts === null ? <BlogListSkeleton /> : <BlogList key={lang} posts={posts} />}
+        <BlogList key={lang} posts={posts} />
       </div>
     </section>
   );

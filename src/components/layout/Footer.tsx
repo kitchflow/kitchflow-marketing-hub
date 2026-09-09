@@ -32,7 +32,11 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-semibold mb-4">Links</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/" hash="features" className="hover:text-foreground transition-colors">{t("nav.features")}</Link></li>
+              <li><Link to="/about" className="hover:text-foreground transition-colors">About</Link></li>
+              <li><a href="/restaurant-inventory-management" className="hover:text-foreground transition-colors">Inventory</a></li>
+              <li><a href="/restaurant-food-waste-management" className="hover:text-foreground transition-colors">Waste</a></li>
+              <li><a href="/restaurant-staff-scheduling" className="hover:text-foreground transition-colors">Staff</a></li>
+              <li><a href="/kitchen-task-management" className="hover:text-foreground transition-colors">Tasks</a></li>
               <li><Link to="/blog" className="hover:text-foreground transition-colors">{t("nav.blog")}</Link></li>
               <li><Link to="/contact" className="hover:text-foreground transition-colors">{t("nav.contact")}</Link></li>
               <li><Link to="/privacy" className="hover:text-foreground transition-colors">{t("footer.privacy")}</Link></li>

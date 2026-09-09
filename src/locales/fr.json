@@ -11,7 +11,7 @@
     "subtitle": "KitchFlow offre aux gérants de restaurants et aux équipes une application puissante pour gérer stocks, équipes, tâches, déchets et fournisseurs — au même endroit.",
     "ctaPrimary": "Télécharger sur l'App Store",
     "ctaSecondary": "Voir comment ça marche",
-    "social": "Utilisé par des cuisines en Suède"
+    "social": "Disponible maintenant sur l'App Store pour iPhone"
   },
   "problem": {
     "label": "Le problème",
@@ -44,7 +44,12 @@
   },
   "screens": {
     "title": "KitchFlow en action",
-    "labels": { "inventory": "Stock", "schedule": "Planning", "waste": "Déchets", "shopping": "Courses" }
+    "labels": {
+      "inventory": "Tableau de bord inventaire restaurant KitchFlow",
+      "schedule": "Planning du personnel KitchFlow",
+      "waste": "Suivi du gaspillage alimentaire KitchFlow",
+      "shopping": "Liste de courses fournisseurs KitchFlow"
+    }
   },
   "who": {
     "title": "Conçu pour toutes les cuisines",
@@ -76,7 +81,8 @@
     "minRead": "min de lecture",
     "empty": "Aucun article dans cette langue pour le moment.",
     "loading": "Chargement…",
-    "notFound": "Cet article est introuvable."
+    "notFound": "Cet article est introuvable.",
+    "appCta": "KitchFlow est disponible maintenant sur l'App Store. Gérez stocks, gaspillage, planning, tâches et fournisseurs dans une seule app d'exploitation."
   },
   "contact": {
     "title": "Contactez-nous",

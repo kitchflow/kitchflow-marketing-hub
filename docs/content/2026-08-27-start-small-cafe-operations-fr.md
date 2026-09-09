@@ -207,7 +207,7 @@ Copiez dans Sheets ou Notion, ou lancez les tâches récurrentes dans KitchFlow.
 - [ ] Si comptage > 90 min, tester un outil digital
 - [ ] Export gaspillage 1 mois, top 3 articles en coût
 - [ ] SOP pour les 2 tâches les plus chaotiques
-- [ ] [Liste d'attente KitchFlow](/) si vous voulez tout centraliser
+- [ ] [Téléchargez KitchFlow sur l'App Store](https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252) si vous voulez tout centraliser
 
 ## FAQ
 
@@ -233,7 +233,7 @@ Loggez chaque perte avec une raison pendant deux semaines, appliquez le FIFO en 
 
 ---
 
-**Prochaine étape :** Choisissez un axe cette semaine (stocks, équipe ou gaspillage) et mesurez 14 jours avant de changer d'équipement ou de carte. Pour regrouper stocks, planning, gaspillage et tâches, [rejoignez la liste d'attente KitchFlow](/).
+**Prochaine étape :** Choisissez un axe cette semaine (stocks, équipe ou gaspillage) et mesurez 14 jours avant de changer d'équipement ou de carte. Pour regrouper stocks, planning, gaspillage et tâches, [téléchargez KitchFlow sur l'App Store](https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252).
 
 ---
 

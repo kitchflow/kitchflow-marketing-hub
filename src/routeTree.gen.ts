@@ -10,10 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RestaurantSupplierManagementRouteImport } from './routes/restaurant-supplier-management'
+import { Route as RestaurantStaffSchedulingRouteImport } from './routes/restaurant-staff-scheduling'
+import { Route as RestaurantInventoryManagementRouteImport } from './routes/restaurant-inventory-management'
+import { Route as RestaurantFoodWasteManagementRouteImport } from './routes/restaurant-food-waste-management'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as KitchenTaskManagementRouteImport } from './routes/kitchen-task-management'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogFeedDotxmlRouteImport } from './routes/blog.feed[.]xml'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -21,14 +28,48 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RestaurantSupplierManagementRoute =
+  RestaurantSupplierManagementRouteImport.update({
+    id: '/restaurant-supplier-management',
+    path: '/restaurant-supplier-management',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const RestaurantStaffSchedulingRoute =
+  RestaurantStaffSchedulingRouteImport.update({
+    id: '/restaurant-staff-scheduling',
+    path: '/restaurant-staff-scheduling',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const RestaurantInventoryManagementRoute =
+  RestaurantInventoryManagementRouteImport.update({
+    id: '/restaurant-inventory-management',
+    path: '/restaurant-inventory-management',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const RestaurantFoodWasteManagementRoute =
+  RestaurantFoodWasteManagementRouteImport.update({
+    id: '/restaurant-food-waste-management',
+    path: '/restaurant-food-waste-management',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KitchenTaskManagementRoute = KitchenTaskManagementRouteImport.update({
+  id: '/kitchen-task-management',
+  path: '/kitchen-task-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +82,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogFeedDotxmlRoute = BlogFeedDotxmlRouteImport.update({
+  id: '/blog/feed.xml',
+  path: '/blog/feed.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -49,56 +95,111 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/kitchen-task-management': typeof KitchenTaskManagementRoute
   '/privacy': typeof PrivacyRoute
+  '/restaurant-food-waste-management': typeof RestaurantFoodWasteManagementRoute
+  '/restaurant-inventory-management': typeof RestaurantInventoryManagementRoute
+  '/restaurant-staff-scheduling': typeof RestaurantStaffSchedulingRoute
+  '/restaurant-supplier-management': typeof RestaurantSupplierManagementRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/blog/feed.xml': typeof BlogFeedDotxmlRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/kitchen-task-management': typeof KitchenTaskManagementRoute
   '/privacy': typeof PrivacyRoute
+  '/restaurant-food-waste-management': typeof RestaurantFoodWasteManagementRoute
+  '/restaurant-inventory-management': typeof RestaurantInventoryManagementRoute
+  '/restaurant-staff-scheduling': typeof RestaurantStaffSchedulingRoute
+  '/restaurant-supplier-management': typeof RestaurantSupplierManagementRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/blog/feed.xml': typeof BlogFeedDotxmlRoute
   '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/kitchen-task-management': typeof KitchenTaskManagementRoute
   '/privacy': typeof PrivacyRoute
+  '/restaurant-food-waste-management': typeof RestaurantFoodWasteManagementRoute
+  '/restaurant-inventory-management': typeof RestaurantInventoryManagementRoute
+  '/restaurant-staff-scheduling': typeof RestaurantStaffSchedulingRoute
+  '/restaurant-supplier-management': typeof RestaurantSupplierManagementRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/blog/feed.xml': typeof BlogFeedDotxmlRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/contact'
+    | '/kitchen-task-management'
     | '/privacy'
+    | '/restaurant-food-waste-management'
+    | '/restaurant-inventory-management'
+    | '/restaurant-staff-scheduling'
+    | '/restaurant-supplier-management'
     | '/sitemap.xml'
     | '/blog/$slug'
+    | '/blog/feed.xml'
     | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/privacy' | '/sitemap.xml' | '/blog/$slug' | '/blog'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/kitchen-task-management'
+    | '/privacy'
+    | '/restaurant-food-waste-management'
+    | '/restaurant-inventory-management'
+    | '/restaurant-staff-scheduling'
+    | '/restaurant-supplier-management'
+    | '/sitemap.xml'
+    | '/blog/$slug'
+    | '/blog/feed.xml'
+    | '/blog'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/contact'
+    | '/kitchen-task-management'
     | '/privacy'
+    | '/restaurant-food-waste-management'
+    | '/restaurant-inventory-management'
+    | '/restaurant-staff-scheduling'
+    | '/restaurant-supplier-management'
     | '/sitemap.xml'
     | '/blog/$slug'
+    | '/blog/feed.xml'
     | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  KitchenTaskManagementRoute: typeof KitchenTaskManagementRoute
   PrivacyRoute: typeof PrivacyRoute
+  RestaurantFoodWasteManagementRoute: typeof RestaurantFoodWasteManagementRoute
+  RestaurantInventoryManagementRoute: typeof RestaurantInventoryManagementRoute
+  RestaurantStaffSchedulingRoute: typeof RestaurantStaffSchedulingRoute
+  RestaurantSupplierManagementRoute: typeof RestaurantSupplierManagementRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogFeedDotxmlRoute: typeof BlogFeedDotxmlRoute
   BlogIndexRoute: typeof BlogIndexRoute
 }
 
@@ -111,6 +212,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/restaurant-supplier-management': {
+      id: '/restaurant-supplier-management'
+      path: '/restaurant-supplier-management'
+      fullPath: '/restaurant-supplier-management'
+      preLoaderRoute: typeof RestaurantSupplierManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurant-staff-scheduling': {
+      id: '/restaurant-staff-scheduling'
+      path: '/restaurant-staff-scheduling'
+      fullPath: '/restaurant-staff-scheduling'
+      preLoaderRoute: typeof RestaurantStaffSchedulingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurant-inventory-management': {
+      id: '/restaurant-inventory-management'
+      path: '/restaurant-inventory-management'
+      fullPath: '/restaurant-inventory-management'
+      preLoaderRoute: typeof RestaurantInventoryManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurant-food-waste-management': {
+      id: '/restaurant-food-waste-management'
+      path: '/restaurant-food-waste-management'
+      fullPath: '/restaurant-food-waste-management'
+      preLoaderRoute: typeof RestaurantFoodWasteManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -118,11 +247,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kitchen-task-management': {
+      id: '/kitchen-task-management'
+      path: '/kitchen-task-management'
+      fullPath: '/kitchen-task-management'
+      preLoaderRoute: typeof KitchenTaskManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -139,6 +282,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/feed.xml': {
+      id: '/blog/feed.xml'
+      path: '/blog/feed.xml'
+      fullPath: '/blog/feed.xml'
+      preLoaderRoute: typeof BlogFeedDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -151,10 +301,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  KitchenTaskManagementRoute: KitchenTaskManagementRoute,
   PrivacyRoute: PrivacyRoute,
+  RestaurantFoodWasteManagementRoute: RestaurantFoodWasteManagementRoute,
+  RestaurantInventoryManagementRoute: RestaurantInventoryManagementRoute,
+  RestaurantStaffSchedulingRoute: RestaurantStaffSchedulingRoute,
+  RestaurantSupplierManagementRoute: RestaurantSupplierManagementRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
+  BlogFeedDotxmlRoute: BlogFeedDotxmlRoute,
   BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport

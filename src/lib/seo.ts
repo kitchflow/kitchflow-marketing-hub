@@ -1,9 +1,14 @@
 export const SITE_URL = "https://kitchflowapp.com";
 export const SITE_NAME = "KitchFlow";
+export const SITE_TAGLINE = "Kitchen Ops";
+export const SITE_ENTITY = "KitchFlow – Kitchen Ops";
+export const SITE_DESCRIPTION =
+  "KitchFlow is a kitchen operations management app for restaurants and cafés that combines inventory management, food-waste tracking, staff scheduling, task management and supplier management.";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
-export const APP_STORE_URL = "https://apps.apple.com/us/app/kitchflow-kitchen-ops/id6762667252";
+export const APP_STORE_ID = "6762667252";
+export const APP_STORE_URL = `https://apps.apple.com/us/app/kitchflow-kitchen-ops/id${APP_STORE_ID}`;
 
 export const absoluteUrl = (path: string) => {
   if (!path) return SITE_URL;
@@ -12,9 +17,7 @@ export const absoluteUrl = (path: string) => {
 };
 
 type SocialMetaInput = {
-  /** Browser tab title (can include " | KitchFlow") */
   documentTitle: string;
-  /** Cleaner title for social cards; falls back to documentTitle */
   socialTitle?: string;
   description: string;
   url: string;
@@ -28,10 +31,6 @@ type SocialMetaInput = {
   authorName?: string;
 };
 
-/**
- * Full Open Graph + Twitter Card tags for link previews.
- * Image URLs must be absolute HTTPS JPG/PNG — never WebP (many scrapers reject it).
- */
 export function socialMetaTags({
   documentTitle,
   socialTitle,
@@ -52,6 +51,7 @@ export function socialMetaTags({
   return [
     { title: documentTitle },
     { name: "description", content: desc },
+    { name: "robots", content: "index, follow" },
     { property: "og:site_name", content: SITE_NAME },
     { property: "og:title", content: title },
     { property: "og:description", content: desc },
@@ -77,4 +77,43 @@ export function socialMetaTags({
     { name: "twitter:image", content: image },
     { name: "twitter:image:alt", content: imageAlt },
   ];
+}
+
+export function organizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE_NAME,
+    alternateName: SITE_ENTITY,
+    url: SITE_URL,
+    logo: `${SITE_URL}/kitchflow-logo.svg`,
+    description: SITE_DESCRIPTION,
+    sameAs: [APP_STORE_URL],
+  };
+}
+
+export function softwareApplicationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: SITE_NAME,
+    alternateName: SITE_ENTITY,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "iOS",
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    image: DEFAULT_OG_IMAGE,
+    downloadUrl: APP_STORE_URL,
+    installUrl: APP_STORE_URL,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
 }

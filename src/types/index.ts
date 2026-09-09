@@ -25,6 +25,7 @@ export type PostTranslation = {
 
 export type Post = {
   _id: string;
+  _updatedAt?: string;
   language: Lang;
   translationKey: string;
   title: string;
