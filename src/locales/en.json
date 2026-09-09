@@ -76,7 +76,9 @@
     "related": "Related articles",
     "share": "Share",
     "minRead": "min read",
-    "empty": "No articles in this language yet."
+    "empty": "No articles in this language yet.",
+    "loading": "Loading…",
+    "notFound": "This article could not be found."
   },
   "contact": {
     "title": "Get in Touch",

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { client } from "@/lib/sanity";
 import { allPostsQuery } from "@/lib/queries";
-import { mockPostsForLanguage } from "@/lib/blog-data";
 import { resolveLang } from "@/lib/i18n";
 import type { Post } from "@/types";
 import { BlogList } from "@/components/blog/BlogList";
@@ -49,13 +48,12 @@ function BlogIndex() {
       .fetch<Post[]>(allPostsQuery, { lang })
       .then((data) => {
         if (!mounted) return;
-        const localized = postsForLang(data ?? [], lang);
-        setPosts(localized.length > 0 ? localized : mockPostsForLanguage(lang));
+        setPosts(postsForLang(data ?? [], lang));
       })
       .catch((err) => {
-        console.warn("Sanity fetch failed, using mock posts", err);
+        console.warn("Sanity fetch failed", err);
         if (!mounted) return;
-        setPosts(mockPostsForLanguage(lang));
+        setPosts([]);
       });
     return () => {
       mounted = false;

@@ -76,7 +76,9 @@
     "related": "Articles liés",
     "share": "Partager",
     "minRead": "min de lecture",
-    "empty": "Aucun article dans cette langue pour le moment."
+    "empty": "Aucun article dans cette langue pour le moment.",
+    "loading": "Chargement…",
+    "notFound": "Cet article est introuvable."
   },
   "contact": {
     "title": "Contactez-nous",

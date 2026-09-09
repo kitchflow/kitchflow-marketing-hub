@@ -1,14 +1,29 @@
 import type { PortableTextComponents } from "@portabletext/react";
 import { urlFor } from "@/lib/sanity";
+import { slugifyHeading } from "@/lib/slugify";
+
+function blockPlainText(value: { children?: { text?: string }[] } | undefined) {
+  return (value?.children ?? []).map((c) => c.text ?? "").join("");
+}
 
 export const portableTextComponents: PortableTextComponents = {
   block: {
-    h2: ({ children }) => (
-      <h2 className="mt-12 mb-4 text-3xl font-bold tracking-tight">{children}</h2>
-    ),
-    h3: ({ children }) => (
-      <h3 className="mt-10 mb-3 text-2xl font-semibold tracking-tight">{children}</h3>
-    ),
+    h2: ({ children, value }) => {
+      const id = slugifyHeading(blockPlainText(value));
+      return (
+        <h2 id={id || undefined} className="mt-12 mb-4 text-3xl font-bold tracking-tight">
+          {children}
+        </h2>
+      );
+    },
+    h3: ({ children, value }) => {
+      const id = slugifyHeading(blockPlainText(value));
+      return (
+        <h3 id={id || undefined} className="mt-10 mb-3 text-2xl font-semibold tracking-tight">
+          {children}
+        </h3>
+      );
+    },
     blockquote: ({ children }) => (
       <blockquote className="my-8 border-l-4 border-primary pl-5 italic text-foreground/80">
         {children}

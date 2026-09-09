@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { client, urlFor } from "@/lib/sanity";
 import { postBySlugQuery, postTranslationsQuery, relatedPostsQuery } from "@/lib/queries";
-import { mockPosts, mockBodyFor } from "@/lib/blog-data";
 import { useBlogTranslations } from "@/contexts/blog-translation";
 import type { Post, PostTranslation } from "@/types";
 import { BlogCard } from "@/components/blog/BlogCard";
@@ -25,33 +24,24 @@ type LoaderData = {
 
 async function loadPost(slug: string): Promise<Post | null> {
   try {
-    const post = await client.fetch<Post | null>(postBySlugQuery, { slug });
-    if (post) return post;
+    return (await client.fetch<Post | null>(postBySlugQuery, { slug })) ?? null;
   } catch {
-    // fall through to mock
+    return null;
   }
-  return mockPosts.find((p) => p.slug.current === slug) ?? null;
 }
 
 async function loadTranslations(post: Post): Promise<PostTranslation[]> {
   if (!post.translationKey) return [];
 
   try {
-    const translations = await client.fetch<PostTranslation[]>(postTranslationsQuery, {
-      translationKey: post.translationKey,
-    });
-    if (translations.length > 0) return translations;
+    return (
+      (await client.fetch<PostTranslation[]>(postTranslationsQuery, {
+        translationKey: post.translationKey,
+      })) ?? []
+    );
   } catch {
-    // fall through to mock siblings
+    return [];
   }
-
-  return mockPosts
-    .filter((p) => p.translationKey === post.translationKey)
-    .map((p) => ({
-      language: p.language,
-      slug: p.slug.current,
-      title: p.title,
-    }));
 }
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -77,7 +67,7 @@ export const Route = createFileRoute("/blog/$slug")({
       : DEFAULT_OG_IMAGE;
 
     return {
-      title: `${post.title} | KitchFlow`,
+      title: `${post.seoTitle || post.title} | KitchFlow`,
       description: (post.seoDescription || post.excerpt || "").slice(0, 160),
       image,
       url,
@@ -89,8 +79,7 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] };
     const { title, description, image, url, publishedAt, authorName, alternates } = loaderData;
-    const defaultAlternate =
-      alternates.find((item) => item.language === "en") ?? alternates[0];
+    const defaultAlternate = alternates.find((item) => item.language === "en") ?? alternates[0];
 
     return {
       meta: [
@@ -162,71 +151,45 @@ function BlogPostPage() {
   const { setTranslations } = useBlogTranslations();
   const [post, setPost] = useState<Post | null>(null);
   const [related, setRelated] = useState<Post[]>([]);
-  const [usingMock, setUsingMock] = useState(false);
+  const [status, setStatus] = useState<"loading" | "ready" | "missing">("loading");
 
   useEffect(() => {
     let mounted = true;
-
-    const loadRelated = (current: Post, fromSanity: boolean) => {
-      if (fromSanity) {
-        client
-          .fetch<Post[]>(relatedPostsQuery, {
-            slug,
-            category: current.category,
-            language: current.language,
-          })
-          .then((rel) => mounted && setRelated(rel ?? []))
-          .catch(() => mounted && setRelated([]));
-        return;
-      }
-
-      setRelated(
-        mockPosts
-          .filter(
-            (p) =>
-              p.category === current.category &&
-              p.slug.current !== slug &&
-              p.language === current.language,
-          )
-          .slice(0, 2),
-      );
-    };
+    setStatus("loading");
+    setPost(null);
+    setRelated([]);
 
     client
       .fetch<Post | null>(postBySlugQuery, { slug })
       .then(async (data) => {
         if (!mounted) return;
 
-        if (data) {
-          setPost(data);
-          setUsingMock(false);
-          const translations = await loadTranslations(data);
-          if (mounted) setTranslations(translations);
-          loadRelated(data, true);
+        if (!data) {
+          setPost(null);
+          setTranslations(null);
+          setStatus("missing");
           return;
         }
 
-        const mock = mockPosts.find((p) => p.slug.current === slug) ?? null;
-        setPost(mock);
-        setUsingMock(true);
-        if (mock) {
-          setTranslations(await loadTranslations(mock));
-          loadRelated(mock, false);
-        } else {
-          setTranslations(null);
-        }
+        setPost(data);
+        setStatus("ready");
+        const translations = await loadTranslations(data);
+        if (mounted) setTranslations(translations);
+
+        client
+          .fetch<Post[]>(relatedPostsQuery, {
+            slug,
+            category: data.category,
+            language: data.language,
+          })
+          .then((rel) => mounted && setRelated(rel ?? []))
+          .catch(() => mounted && setRelated([]));
       })
-      .catch(async () => {
-        const mock = mockPosts.find((p) => p.slug.current === slug) ?? null;
+      .catch(() => {
         if (!mounted) return;
-        setPost(mock);
-        setUsingMock(true);
-        if (mock) {
-          setTranslations(await loadTranslations(mock));
-          loadRelated(mock, false);
-        } else {
-          setTranslations(null);
-        }
+        setPost(null);
+        setTranslations(null);
+        setStatus("missing");
       });
 
     return () => {
@@ -235,10 +198,24 @@ function BlogPostPage() {
     };
   }, [slug, setTranslations]);
 
-  if (!post) {
+  if (status === "loading") {
     return (
       <div className="mx-auto max-w-3xl px-5 py-32 text-center">
-        <p className="text-muted-foreground">Loading…</p>
+        <p className="text-muted-foreground">{t("blog.loading")}</p>
+      </div>
+    );
+  }
+
+  if (status === "missing" || !post) {
+    return (
+      <div className="mx-auto max-w-3xl px-5 py-32 text-center">
+        <p className="text-muted-foreground">{t("blog.notFound")}</p>
+        <Link
+          to="/blog"
+          className="mt-6 inline-flex text-sm font-medium text-primary hover:underline"
+        >
+          {t("blog.back")}
+        </Link>
       </div>
     );
   }
@@ -258,8 +235,6 @@ function BlogPostPage() {
       toast.error("Could not copy");
     }
   };
-
-  const mockParagraphs = usingMock ? mockBodyFor(slug) : [];
 
   return (
     <article className="py-12 lg:py-16">
@@ -314,18 +289,9 @@ function BlogPostPage() {
           {post.body && post.body.length > 0 ? (
             <PortableText value={post.body} components={portableTextComponents} />
           ) : (
-            <>
-              {post.excerpt && (
-                <p className="text-xl leading-[1.7] text-foreground/85 font-medium">
-                  {post.excerpt}
-                </p>
-              )}
-              {mockParagraphs.map((p, i) => (
-                <p key={i} className="my-5 text-[18px] leading-[1.8] text-foreground/85">
-                  {p}
-                </p>
-              ))}
-            </>
+            post.excerpt && (
+              <p className="text-xl leading-[1.7] text-foreground/85 font-medium">{post.excerpt}</p>
+            )
           )}
         </div>
 
