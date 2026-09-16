@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Globe, Check } from "lucide-react";
 import { SUPPORTED_LANGS, resolveLang, setLanguage, type Lang } from "@/lib/i18n";
 import { useOptionalBlogTranslations } from "@/contexts/blog-translation";
+import { blogHubPath, isBlogHubPath, isBlogPostPath } from "@/lib/locale-path";
 import { cn } from "@/lib/utils";
 
 const labels: Record<Lang, string> = { en: "EN", fr: "FR", ar: "AR" };
@@ -13,6 +14,21 @@ const fullNames: Record<Lang, string> = {
   ar: "العربية",
 };
 
+function destinationForLang(
+  lang: Lang,
+  pathname: string,
+  findSlugForLanguage?: (lang: Lang) => string | null,
+): string | null {
+  if (isBlogPostPath(pathname) && findSlugForLanguage) {
+    const slug = findSlugForLanguage(lang);
+    return slug ? `/blog/${slug}` : null;
+  }
+  if (isBlogHubPath(pathname)) {
+    return blogHubPath(lang);
+  }
+  return null;
+}
+
 export function LanguageSwitcher({
   compact = false,
   dropUp = false,
@@ -21,24 +37,14 @@ export function LanguageSwitcher({
   dropUp?: boolean;
 }) {
   const { i18n } = useTranslation();
-  const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const blogTranslations = useOptionalBlogTranslations();
   const [open, setOpen] = useState(false);
   const current = resolveLang(i18n.resolvedLanguage ?? i18n.language);
 
-  const isBlogPost = pathname.startsWith("/blog/") && pathname !== "/blog";
-
-  const handleLanguageChange = (lang: Lang) => {
+  const handleUiOnlyChange = (lang: Lang) => {
     setLanguage(lang);
     setOpen(false);
-
-    if (isBlogPost && blogTranslations) {
-      const nextSlug = blogTranslations.findSlugForLanguage(lang);
-      if (nextSlug) {
-        navigate({ to: "/blog/$slug", params: { slug: nextSlug } });
-      }
-    }
   };
 
   useEffect(() => {
@@ -69,17 +75,41 @@ export function LanguageSwitcher({
             dropUp ? "bottom-full mb-2" : "top-full mt-2",
           )}
         >
-          {SUPPORTED_LANGS.map((lang) => (
-            <button
-              key={lang}
-              type="button"
-              onClick={() => handleLanguageChange(lang)}
-              className="flex w-full items-center justify-between px-4 py-2.5 text-sm hover:bg-muted text-start"
-            >
-              <span>{fullNames[lang]}</span>
-              {current === lang && <Check className="h-4 w-4 text-primary" />}
-            </button>
-          ))}
+          {SUPPORTED_LANGS.map((lang) => {
+            const href = destinationForLang(lang, pathname, blogTranslations?.findSlugForLanguage);
+            const className =
+              "flex w-full items-center justify-between px-4 py-2.5 text-sm hover:bg-muted text-start";
+
+            if (href) {
+              return (
+                <a
+                  key={lang}
+                  href={href}
+                  className={className}
+                  onClick={() => {
+                    setLanguage(lang);
+                    setOpen(false);
+                  }}
+                  hrefLang={lang}
+                >
+                  <span>{fullNames[lang]}</span>
+                  {current === lang && <Check className="h-4 w-4 text-primary" />}
+                </a>
+              );
+            }
+
+            return (
+              <button
+                key={lang}
+                type="button"
+                onClick={() => handleUiOnlyChange(lang)}
+                className={className}
+              >
+                <span>{fullNames[lang]}</span>
+                {current === lang && <Check className="h-4 w-4 text-primary" />}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

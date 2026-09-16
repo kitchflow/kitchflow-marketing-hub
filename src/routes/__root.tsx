@@ -1,10 +1,11 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, HeadContent, Scripts, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
-import i18n, { applyLangToDocument, type Lang } from "@/lib/i18n";
+import { applyLangToDocument } from "@/lib/i18n";
 import { BlogTranslationProvider } from "@/contexts/blog-translation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { documentLangFromMatches } from "@/lib/locale-path";
 import { APP_STORE_ID } from "@/lib/seo";
 
 import appCss from "../styles.css?url";
@@ -61,50 +62,48 @@ export const Route = createRootRoute({
       },
     ],
   }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
+function RootComponent() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const matches = useRouterState({ select: (s) => s.matches });
+  const lang = documentLangFromMatches(pathname, matches);
+  const dir = lang === "ar" ? "rtl" : "ltr";
+
+  useEffect(() => {
+    applyLangToDocument(lang);
+  }, [lang]);
+
   return (
-    <html lang="en">
+    <html lang={lang} dir={dir} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
+        <BlogTranslationProvider>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            <Footer />
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                style: {
+                  borderRadius: "9999px",
+                  border: "1px solid var(--color-border)",
+                  background: "var(--color-background)",
+                  color: "var(--color-foreground)",
+                },
+              }}
+            />
+          </div>
+        </BlogTranslationProvider>
         <Scripts />
       </body>
     </html>
-  );
-}
-
-function RootComponent() {
-  useEffect(() => {
-    applyLangToDocument((i18n.language as Lang) || "en");
-  }, []);
-
-  return (
-    <BlogTranslationProvider>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            style: {
-              borderRadius: "9999px",
-              border: "1px solid var(--color-border)",
-              background: "var(--color-background)",
-              color: "var(--color-foreground)",
-            },
-          }}
-        />
-      </div>
-    </BlogTranslationProvider>
   );
 }

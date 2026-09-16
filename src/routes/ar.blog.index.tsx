@@ -3,14 +3,14 @@ import { client } from "@/lib/sanity";
 import { allPostsQuery } from "@/lib/queries";
 import type { Post } from "@/types";
 import { BlogHubPage } from "@/components/blog/BlogHubPage";
-import { DEFAULT_OG_IMAGE, SITE_URL, socialMetaTags } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, socialMetaTags } from "@/lib/seo";
 import { blogHubAbsoluteUrl, blogHubAlternateLinks, HUB_META } from "@/lib/locale-path";
 
-const LANG = "en" as const;
+const LANG = "ar" as const;
 const meta = HUB_META[LANG];
 const URL = blogHubAbsoluteUrl(LANG);
 
-export const Route = createFileRoute("/blog/")({
+export const Route = createFileRoute("/ar/blog/")({
   loader: async () => {
     try {
       const posts = await client.fetch<Post[]>(allPostsQuery, { lang: LANG });
@@ -30,16 +30,12 @@ export const Route = createFileRoute("/blog/")({
       type: "website",
       locale: meta.locale,
     }),
-    links: [
-      { rel: "canonical", href: URL },
-      { rel: "alternate", type: "application/rss+xml", href: `${SITE_URL}/blog/feed.xml` },
-      ...blogHubAlternateLinks(),
-    ],
+    links: [{ rel: "canonical", href: URL }, ...blogHubAlternateLinks()],
   }),
-  component: BlogIndex,
+  component: ArabicBlogIndex,
 });
 
-function BlogIndex() {
+function ArabicBlogIndex() {
   const { posts } = Route.useLoaderData();
   return <BlogHubPage lang={LANG} posts={posts} />;
 }

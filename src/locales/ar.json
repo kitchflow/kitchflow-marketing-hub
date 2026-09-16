@@ -4,11 +4,13 @@
     "about": "عن التطبيق",
     "faq": "الأسئلة الشائعة",
     "blog": "المدونة",
+    "home": "الرئيسية",
     "contact": "تواصل",
     "download": "حمّل من App Store",
     "viewAllFeatures": "عرض كل المميزات",
     "primaryLabel": "التنقل الرئيسي",
-    "menuLabel": "فتح قائمة التنقل"
+    "menuLabel": "فتح قائمة التنقل",
+    "languages": "اللغات"
   },
   "hero": {
     "badge": "متاح الآن على App Store",

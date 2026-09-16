@@ -14,11 +14,25 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/KFButton";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Logo } from "@/components/ui/Logo";
+import { resolveLang } from "@/lib/i18n";
+import {
+  blogHubPath,
+  documentLangFromMatches,
+  isBlogHubPath,
+  isBlogPostPath,
+} from "@/lib/locale-path";
 import { APP_STORE_URL } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const matches = useRouterState({ select: (s) => s.matches });
+  const uiLang = resolveLang(i18n.resolvedLanguage ?? i18n.language);
+  const routeLang = documentLangFromMatches(pathname, matches);
+  const blogLang =
+    isBlogHubPath(pathname) || isBlogPostPath(pathname) ? routeLang : uiLang;
+  const blogPath = blogHubPath(blogLang);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
@@ -146,7 +160,9 @@ export function Navbar() {
             >
               {t("nav.faq")}
             </Link>
-            {navLink("/blog", t("nav.blog"))}
+            <a href={blogPath} className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+              {t("nav.blog")}
+            </a>
             {navLink("/contact", t("nav.contact"))}
           </nav>
 
@@ -206,9 +222,9 @@ export function Navbar() {
           <Link to="/" hash="faq" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.faq")}
           </Link>
-          <Link to="/blog" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
+          <a href={blogPath} className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.blog")}
-          </Link>
+          </a>
           <Link to="/contact" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.contact")}
           </Link>

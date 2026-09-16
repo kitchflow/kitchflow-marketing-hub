@@ -19,6 +19,8 @@ const STATIC_PAGES: { path: string; changefreq: string; priority: string }[] = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.8" },
   { path: "/blog", changefreq: "weekly", priority: "0.8" },
+  { path: "/fr/blog", changefreq: "weekly", priority: "0.8" },
+  { path: "/ar/blog", changefreq: "weekly", priority: "0.8" },
   { path: "/restaurant-inventory-management", changefreq: "monthly", priority: "0.8" },
   { path: "/restaurant-food-waste-management", changefreq: "monthly", priority: "0.8" },
   { path: "/restaurant-staff-scheduling", changefreq: "monthly", priority: "0.8" },

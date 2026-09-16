@@ -4,11 +4,13 @@
     "about": "About",
     "faq": "FAQ",
     "blog": "Blog",
+    "home": "Home",
     "contact": "Contact",
     "download": "Download on the App Store",
     "viewAllFeatures": "View all features",
     "primaryLabel": "Primary navigation",
-    "menuLabel": "Open navigation menu"
+    "menuLabel": "Open navigation menu",
+    "languages": "Languages"
   },
   "hero": {
     "badge": "Now on the App Store",

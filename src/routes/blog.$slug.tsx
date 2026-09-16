@@ -10,6 +10,8 @@ import { useBlogTranslations } from "@/contexts/blog-translation";
 import type { Post, PostTranslation } from "@/types";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { portableTextComponents } from "@/components/blog/PortableTextComponents";
+import { setLanguage, type Lang } from "@/lib/i18n";
+import { blogHubAbsoluteUrl, blogHubPath, BLOG_LABEL, HOME_LABEL } from "@/lib/locale-path";
 import {
   SITE_URL,
   DEFAULT_OG_IMAGE,
@@ -39,6 +41,12 @@ const LOCALE_BY_LANG: Record<string, string> = {
   en: "en_US",
   fr: "fr_FR",
   ar: "ar_AR",
+};
+
+const LANG_LINK_LABEL: Record<Lang, string> = {
+  en: "English",
+  fr: "Français",
+  ar: "العربية",
 };
 
 function ogImageUrl(coverImage: Post["coverImage"]): string | null {
@@ -132,6 +140,8 @@ export const Route = createFileRoute("/blog/$slug")({
     } = loaderData;
     const defaultAlternate =
       alternates.find((item) => item.language === "en") ?? alternates[0];
+    const lang = post.language;
+    const hubUrl = blogHubAbsoluteUrl(lang as Lang);
 
     const breadcrumb = {
       "@context": "https://schema.org",
@@ -140,14 +150,14 @@ export const Route = createFileRoute("/blog/$slug")({
         {
           "@type": "ListItem",
           position: 1,
-          name: "Home",
+          name: HOME_LABEL[lang] ?? HOME_LABEL.en,
           item: SITE_URL,
         },
         {
           "@type": "ListItem",
           position: 2,
-          name: "Blog",
-          item: `${SITE_URL}/blog`,
+          name: BLOG_LABEL[lang] ?? BLOG_LABEL.en,
+          item: hubUrl,
         },
         {
           "@type": "ListItem",
@@ -177,7 +187,7 @@ export const Route = createFileRoute("/blog/$slug")({
         },
       },
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
-      inLanguage: locale.replace("_", "-"),
+      inLanguage: post.language,
       articleSection: post.category,
     };
 
@@ -236,11 +246,13 @@ function BlogPostPage() {
   const { post, related, alternates, url } = Route.useLoaderData();
   const { t, i18n } = useTranslation();
   const { setTranslations } = useBlogTranslations();
+  const hubPath = blogHubPath(post.language as Lang);
 
   useEffect(() => {
     setTranslations(alternates);
+    setLanguage(post.language as Lang);
     return () => setTranslations(null);
-  }, [alternates, setTranslations]);
+  }, [alternates, post.language, setTranslations]);
 
   const cover = post.coverImage?.asset
     ? urlFor(post.coverImage).width(1600).auto("format").url()
@@ -255,6 +267,14 @@ function BlogPostPage() {
     }
   };
 
+  const translationLinks = (["en", "fr", "ar"] as const)
+    .map((lang) => {
+      const alt = alternates.find((item) => item.language === lang);
+      if (!alt) return null;
+      return { lang, slug: alt.slug, label: LANG_LINK_LABEL[lang] };
+    })
+    .filter(Boolean) as { lang: Lang; slug: string; label: string }[];
+
   return (
     <article className="py-12 lg:py-16">
       <div className="mx-auto max-w-3xl px-5 lg:px-8">
@@ -262,19 +282,45 @@ function BlogPostPage() {
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link to="/" className="hover:text-foreground transition">
-                Home
+                {HOME_LABEL[post.language as Lang] ?? HOME_LABEL.en}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li>
-              <Link to="/blog" className="hover:text-foreground transition">
-                {t("nav.blog")}
-              </Link>
+              <a href={hubPath} className="hover:text-foreground transition">
+                {BLOG_LABEL[post.language as Lang] ?? BLOG_LABEL.en}
+              </a>
             </li>
             <li aria-hidden="true">/</li>
             <li className="text-foreground line-clamp-1">{post.title}</li>
           </ol>
         </nav>
+
+        {translationLinks.length > 1 && (
+          <nav aria-label={t("nav.languages")} className="mt-4 text-sm">
+            <ul className="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
+              {translationLinks.map((item, index) => (
+                <li key={item.lang} className="inline-flex items-center gap-2">
+                  {index > 0 && <span aria-hidden="true">|</span>}
+                  {item.lang === post.language ? (
+                    <span className="font-medium text-foreground" lang={item.lang}>
+                      {item.label}
+                    </span>
+                  ) : (
+                    <a
+                      href={`/blog/${item.slug}`}
+                      hrefLang={item.lang}
+                      lang={item.lang}
+                      className="hover:text-foreground transition"
+                    >
+                      {item.label}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
         <div className="mt-8">
           <span className="inline-block text-xs font-semibold uppercase tracking-wider text-primary bg-primary-soft rounded-full px-2.5 py-1">

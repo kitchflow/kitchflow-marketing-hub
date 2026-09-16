@@ -1,12 +1,26 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Instagram, Linkedin, Twitter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/ui/Logo";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { resolveLang } from "@/lib/i18n";
+import {
+  blogHubPath,
+  documentLangFromMatches,
+  isBlogHubPath,
+  isBlogPostPath,
+} from "@/lib/locale-path";
 import { APP_STORE_URL } from "@/lib/seo";
 
 export function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const matches = useRouterState({ select: (s) => s.matches });
+  const uiLang = resolveLang(i18n.resolvedLanguage ?? i18n.language);
+  const routeLang = documentLangFromMatches(pathname, matches);
+  const blogLang =
+    isBlogHubPath(pathname) || isBlogPostPath(pathname) ? routeLang : uiLang;
+  const blogPath = blogHubPath(blogLang);
   const year = new Date().getFullYear();
   return (
     <footer className="border-t border-border bg-background mt-24">
@@ -37,7 +51,7 @@ export function Footer() {
               <li><a href="/restaurant-food-waste-management" className="hover:text-foreground transition-colors">{t("footer.waste")}</a></li>
               <li><a href="/restaurant-staff-scheduling" className="hover:text-foreground transition-colors">{t("footer.staff")}</a></li>
               <li><a href="/kitchen-task-management" className="hover:text-foreground transition-colors">{t("footer.tasks")}</a></li>
-              <li><Link to="/blog" className="hover:text-foreground transition-colors">{t("nav.blog")}</Link></li>
+              <li><a href={blogPath} className="hover:text-foreground transition-colors">{t("nav.blog")}</a></li>
               <li><Link to="/contact" className="hover:text-foreground transition-colors">{t("nav.contact")}</Link></li>
               <li><Link to="/privacy" className="hover:text-foreground transition-colors">{t("footer.privacy")}</Link></li>
             </ul>
