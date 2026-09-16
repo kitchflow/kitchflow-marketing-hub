@@ -15,6 +15,7 @@ import { Route as RestaurantStaffSchedulingRouteImport } from './routes/restaura
 import { Route as RestaurantInventoryManagementRouteImport } from './routes/restaurant-inventory-management'
 import { Route as RestaurantFoodWasteManagementRouteImport } from './routes/restaurant-food-waste-management'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as KitchenTaskManagementRouteImport } from './routes/kitchen-task-management'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
@@ -22,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogFeedDotxmlRouteImport } from './routes/blog.feed[.]xml'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as FrBlogIndexRouteImport } from './routes/fr.blog.index'
 import { Route as ArBlogIndexRouteImport } from './routes/ar.blog.index'
 
@@ -59,6 +61,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KitchenTaskManagementRoute = KitchenTaskManagementRouteImport.update({
   id: '/kitchen-task-management',
   path: '/kitchen-task-management',
@@ -94,6 +101,12 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const FrBlogIndexRoute = FrBlogIndexRouteImport.update({
   id: '/fr/blog/',
   path: '/fr/blog/',
@@ -110,12 +123,14 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/kitchen-task-management': typeof KitchenTaskManagementRoute
+  '/mcp': typeof McpRoute
   '/privacy': typeof PrivacyRoute
   '/restaurant-food-waste-management': typeof RestaurantFoodWasteManagementRoute
   '/restaurant-inventory-management': typeof RestaurantInventoryManagementRoute
   '/restaurant-staff-scheduling': typeof RestaurantStaffSchedulingRoute
   '/restaurant-supplier-management': typeof RestaurantSupplierManagementRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/feed.xml': typeof BlogFeedDotxmlRoute
   '/blog/': typeof BlogIndexRoute
@@ -127,12 +142,14 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/kitchen-task-management': typeof KitchenTaskManagementRoute
+  '/mcp': typeof McpRoute
   '/privacy': typeof PrivacyRoute
   '/restaurant-food-waste-management': typeof RestaurantFoodWasteManagementRoute
   '/restaurant-inventory-management': typeof RestaurantInventoryManagementRoute
   '/restaurant-staff-scheduling': typeof RestaurantStaffSchedulingRoute
   '/restaurant-supplier-management': typeof RestaurantSupplierManagementRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/feed.xml': typeof BlogFeedDotxmlRoute
   '/blog': typeof BlogIndexRoute
@@ -145,12 +162,14 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/kitchen-task-management': typeof KitchenTaskManagementRoute
+  '/mcp': typeof McpRoute
   '/privacy': typeof PrivacyRoute
   '/restaurant-food-waste-management': typeof RestaurantFoodWasteManagementRoute
   '/restaurant-inventory-management': typeof RestaurantInventoryManagementRoute
   '/restaurant-staff-scheduling': typeof RestaurantStaffSchedulingRoute
   '/restaurant-supplier-management': typeof RestaurantSupplierManagementRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/feed.xml': typeof BlogFeedDotxmlRoute
   '/blog/': typeof BlogIndexRoute
@@ -164,12 +183,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/kitchen-task-management'
+    | '/mcp'
     | '/privacy'
     | '/restaurant-food-waste-management'
     | '/restaurant-inventory-management'
     | '/restaurant-staff-scheduling'
     | '/restaurant-supplier-management'
     | '/sitemap.xml'
+    | '/.well-known/oauth-protected-resource'
     | '/blog/$slug'
     | '/blog/feed.xml'
     | '/blog/'
@@ -181,12 +202,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/kitchen-task-management'
+    | '/mcp'
     | '/privacy'
     | '/restaurant-food-waste-management'
     | '/restaurant-inventory-management'
     | '/restaurant-staff-scheduling'
     | '/restaurant-supplier-management'
     | '/sitemap.xml'
+    | '/.well-known/oauth-protected-resource'
     | '/blog/$slug'
     | '/blog/feed.xml'
     | '/blog'
@@ -198,12 +221,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/kitchen-task-management'
+    | '/mcp'
     | '/privacy'
     | '/restaurant-food-waste-management'
     | '/restaurant-inventory-management'
     | '/restaurant-staff-scheduling'
     | '/restaurant-supplier-management'
     | '/sitemap.xml'
+    | '/.well-known/oauth-protected-resource'
     | '/blog/$slug'
     | '/blog/feed.xml'
     | '/blog/'
@@ -216,12 +241,14 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   KitchenTaskManagementRoute: typeof KitchenTaskManagementRoute
+  McpRoute: typeof McpRoute
   PrivacyRoute: typeof PrivacyRoute
   RestaurantFoodWasteManagementRoute: typeof RestaurantFoodWasteManagementRoute
   RestaurantInventoryManagementRoute: typeof RestaurantInventoryManagementRoute
   RestaurantStaffSchedulingRoute: typeof RestaurantStaffSchedulingRoute
   RestaurantSupplierManagementRoute: typeof RestaurantSupplierManagementRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogFeedDotxmlRoute: typeof BlogFeedDotxmlRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -273,6 +300,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kitchen-task-management': {
       id: '/kitchen-task-management'
       path: '/kitchen-task-management'
@@ -322,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fr/blog/': {
       id: '/fr/blog/'
       path: '/fr/blog'
@@ -344,12 +385,15 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   KitchenTaskManagementRoute: KitchenTaskManagementRoute,
+  McpRoute: McpRoute,
   PrivacyRoute: PrivacyRoute,
   RestaurantFoodWasteManagementRoute: RestaurantFoodWasteManagementRoute,
   RestaurantInventoryManagementRoute: RestaurantInventoryManagementRoute,
   RestaurantStaffSchedulingRoute: RestaurantStaffSchedulingRoute,
   RestaurantSupplierManagementRoute: RestaurantSupplierManagementRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogFeedDotxmlRoute: BlogFeedDotxmlRoute,
   BlogIndexRoute: BlogIndexRoute,
