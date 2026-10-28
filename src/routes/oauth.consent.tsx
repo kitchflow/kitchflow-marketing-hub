@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { SITE_URL } from "@/lib/seo";
 
 const searchSchema = z.object({
@@ -49,38 +49,46 @@ function ConsentPage() {
         return;
       }
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      try {
+        const supabase = await getSupabase();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-      if (!user) {
-        const redirect = `/oauth/consent?authorization_id=${encodeURIComponent(authorizationId)}`;
-        void navigate({
-          to: "/login",
-          search: { redirect },
-        });
-        return;
-      }
+        if (!user) {
+          const redirect = `/oauth/consent?authorization_id=${encodeURIComponent(authorizationId)}`;
+          void navigate({
+            to: "/login",
+            search: { redirect },
+          });
+          return;
+        }
 
-      const { data, error: detailsError } =
-        await supabase.auth.oauth.getAuthorizationDetails(authorizationId);
+        const { data, error: detailsError } =
+          await supabase.auth.oauth.getAuthorizationDetails(authorizationId);
 
-      if (cancelled) return;
+        if (cancelled) return;
 
-      if (detailsError) {
-        setError(detailsError.message);
+        if (detailsError) {
+          setError(detailsError.message);
+          setLoading(false);
+          return;
+        }
+
+        const payload = data as AuthDetails;
+        if (payload?.redirect_url && !payload.authorization_id) {
+          window.location.href = payload.redirect_url;
+          return;
+        }
+
+        setDetails(payload);
         setLoading(false);
-        return;
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Failed to load authorization");
+          setLoading(false);
+        }
       }
-
-      const payload = data as AuthDetails;
-      if (payload?.redirect_url && !payload.authorization_id) {
-        window.location.href = payload.redirect_url;
-        return;
-      }
-
-      setDetails(payload);
-      setLoading(false);
     }
 
     void load();
@@ -92,27 +100,39 @@ function ConsentPage() {
   async function approve() {
     if (!authorizationId) return;
     setActing(true);
-    const { data, error: approveError } =
-      await supabase.auth.oauth.approveAuthorization(authorizationId);
-    setActing(false);
-    if (approveError) {
-      setError(approveError.message);
-      return;
+    try {
+      const supabase = await getSupabase();
+      const { data, error: approveError } =
+        await supabase.auth.oauth.approveAuthorization(authorizationId);
+      if (approveError) {
+        setError(approveError.message);
+        return;
+      }
+      window.location.href = (data as { redirect_url: string }).redirect_url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Approve failed");
+    } finally {
+      setActing(false);
     }
-    window.location.href = (data as { redirect_url: string }).redirect_url;
   }
 
   async function deny() {
     if (!authorizationId) return;
     setActing(true);
-    const { data, error: denyError } =
-      await supabase.auth.oauth.denyAuthorization(authorizationId);
-    setActing(false);
-    if (denyError) {
-      setError(denyError.message);
-      return;
+    try {
+      const supabase = await getSupabase();
+      const { data, error: denyError } =
+        await supabase.auth.oauth.denyAuthorization(authorizationId);
+      if (denyError) {
+        setError(denyError.message);
+        return;
+      }
+      window.location.href = (data as { redirect_url: string }).redirect_url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Deny failed");
+    } finally {
+      setActing(false);
     }
-    window.location.href = (data as { redirect_url: string }).redirect_url;
   }
 
   if (loading) {
@@ -163,7 +183,8 @@ function ConsentPage() {
         <CardContent className="space-y-4">
           {details?.redirect_uri ? (
             <p className="break-all text-sm text-muted-foreground">
-              Redirect: <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{details.redirect_uri}</code>
+              Redirect:{" "}
+              <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{details.redirect_uri}</code>
             </p>
           ) : null}
           {scopes.length > 0 ? (

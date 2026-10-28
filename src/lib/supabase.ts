@@ -1,12 +1,17 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { getSupabasePublicConfig } from "@/lib/supabase.functions";
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+let clientPromise: Promise<SupabaseClient> | null = null;
 
-if (!url || !anonKey) {
-  console.warn(
-    "[kitchflow] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY — OAuth login/consent will not work.",
-  );
+/**
+ * Browser Supabase client. Loads SUPABASE_URL + SUPABASE_ANON_KEY from the
+ * server at runtime so values can live in Lovable secrets (no VITE_ prefix).
+ */
+export function getSupabase(): Promise<SupabaseClient> {
+  if (!clientPromise) {
+    clientPromise = getSupabasePublicConfig().then(({ url, anonKey }) =>
+      createClient(url, anonKey),
+    );
+  }
+  return clientPromise;
 }
-
-export const supabase = createClient(url ?? "", anonKey ?? "");

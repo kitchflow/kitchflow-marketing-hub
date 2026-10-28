@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { SITE_URL } from "@/lib/seo";
 
 const searchSchema = z.object({
@@ -43,14 +43,19 @@ function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const { error: signError } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (signError) {
-      setError(signError.message);
-      return;
+    try {
+      const supabase = await getSupabase();
+      const { error: signError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signError) {
+        setError(signError.message);
+        return;
+      }
+      window.location.assign(redirect);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Sign-in failed");
+    } finally {
+      setLoading(false);
     }
-    // Preserve query strings on OAuth return paths (e.g. /oauth/consent?authorization_id=…).
-    window.location.assign(redirect);
   }
 
   return (
