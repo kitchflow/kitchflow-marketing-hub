@@ -66,11 +66,16 @@ export const Route = createRootRoute({
   notFoundComponent: NotFoundComponent,
 });
 
+function isAuthChromePath(pathname: string): boolean {
+  return pathname === "/login" || pathname === "/oauth/consent" || pathname.startsWith("/oauth/consent/");
+}
+
 function RootComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const matches = useRouterState({ select: (s) => s.matches });
   const lang = documentLangFromMatches(pathname, matches);
   const dir = lang === "ar" ? "rtl" : "ltr";
+  const hideChrome = isAuthChromePath(pathname);
 
   useEffect(() => {
     applyLangToDocument(lang);
@@ -84,11 +89,11 @@ function RootComponent() {
       <body>
         <BlogTranslationProvider>
           <div className="min-h-screen flex flex-col">
-            <Navbar />
+            {!hideChrome ? <Navbar /> : null}
             <main className="flex-1">
               <Outlet />
             </main>
-            <Footer />
+            {!hideChrome ? <Footer /> : null}
             <Toaster
               position="top-center"
               toastOptions={{
