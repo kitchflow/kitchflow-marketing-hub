@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { z } from "zod";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +11,10 @@ import { getSupabase } from "@/lib/supabase";
 import { SITE_URL } from "@/lib/seo";
 
 const searchSchema = z.object({
-  redirect: z.string().optional().catch("/"),
+  /** Full in-app path, e.g. /oauth/consent?authorization_id=… */
+  redirect: z.string().optional(),
+  /** Preferred OAuth return — avoids stuffing ? into the redirect search param */
+  authorization_id: z.string().optional(),
 });
 
 export const Route = createFileRoute("/login")({
@@ -27,17 +31,32 @@ export const Route = createFileRoute("/login")({
 });
 
 function isSafeRedirect(value: string): boolean {
-  return value.startsWith("/") && !value.startsWith("//");
+  return value.startsWith("/") && !value.startsWith("//") && !value.includes("://");
+}
+
+function resolvePostLoginHref(search: {
+  redirect?: string;
+  authorization_id?: string;
+}): string {
+  if (search.authorization_id) {
+    return `/oauth/consent?authorization_id=${encodeURIComponent(search.authorization_id)}`;
+  }
+  if (search.redirect && isSafeRedirect(search.redirect)) {
+    return search.redirect;
+  }
+  return "/";
 }
 
 function LoginPage() {
-  const { redirect: redirectParam } = Route.useSearch();
-  const redirect = redirectParam && isSafeRedirect(redirectParam) ? redirectParam : "/";
+  const search = Route.useSearch();
+  const nextHref = resolvePostLoginHref(search);
+  const returningToOauth = Boolean(search.authorization_id) || nextHref.startsWith("/oauth/consent");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -45,12 +64,26 @@ function LoginPage() {
     setError(null);
     try {
       const supabase = await getSupabase();
-      const { error: signError } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error: signError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (signError) {
         setError(signError.message);
         return;
       }
-      window.location.assign(redirect);
+      if (!data.session) {
+        setError("Signed in, but no session was returned. Try again.");
+        return;
+      }
+
+      setSignedIn(true);
+      toast.success(
+        returningToOauth ? "Signed in — continuing authorization…" : "Signed in successfully",
+      );
+
+      // Hard navigate so the next page picks up the persisted session.
+      window.location.assign(nextHref);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign-in failed");
     } finally {
@@ -65,37 +98,55 @@ function LoginPage() {
           <CardTitle className="font-[family-name:var(--font-display)] text-2xl">
             Sign in to KitchFlow
           </CardTitle>
-          <CardDescription>Use the same email and password as the mobile app.</CardDescription>
+          <CardDescription>
+            {returningToOauth
+              ? "Sign in with your app account to authorize the AI assistant."
+              : "Use the same email and password as the mobile app."}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {error ? <p className="text-sm text-destructive">{error}</p> : null}
-            <Button type="submit" className="w-full rounded-full" disabled={loading}>
-              {loading ? "Signing in…" : "Sign in"}
-            </Button>
-          </form>
+          {signedIn ? (
+            <p className="text-sm text-muted-foreground">
+              Signed in. Redirecting…
+              {!returningToOauth ? (
+                <>
+                  {" "}
+                  <Link to="/" className="text-primary hover:underline">
+                    Go home
+                  </Link>
+                </>
+              ) : null}
+            </p>
+          ) : (
+            <form onSubmit={onSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              {error ? <p className="text-sm text-destructive">{error}</p> : null}
+              <Button type="submit" className="w-full rounded-full" disabled={loading}>
+                {loading ? "Signing in…" : "Sign in"}
+              </Button>
+            </form>
+          )}
           <p className="mt-4 text-sm text-muted-foreground">
             <Link to="/" className="text-primary hover:underline">
               Back home

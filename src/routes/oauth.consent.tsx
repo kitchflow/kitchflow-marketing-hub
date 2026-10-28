@@ -56,10 +56,9 @@ function ConsentPage() {
         } = await supabase.auth.getUser();
 
         if (!user) {
-          const redirect = `/oauth/consent?authorization_id=${encodeURIComponent(authorizationId)}`;
           void navigate({
             to: "/login",
-            search: { redirect },
+            search: { authorization_id: authorizationId },
           });
           return;
         }
