@@ -53,6 +53,7 @@ export function Footer() {
               <li><a href="/kitchen-task-management" className="hover:text-foreground transition-colors">{t("footer.tasks")}</a></li>
               <li><a href={blogPath} className="hover:text-foreground transition-colors">{t("nav.blog")}</a></li>
               <li><Link to="/contact" className="hover:text-foreground transition-colors">{t("nav.contact")}</Link></li>
+              <li><Link to="/connect" className="hover:text-foreground transition-colors">{t("footer.mcp")}</Link></li>
               <li><Link to="/privacy" className="hover:text-foreground transition-colors">{t("footer.privacy")}</Link></li>
             </ul>
           </div>
