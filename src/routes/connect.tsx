@@ -1,36 +1,61 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { Check, Copy, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/KFButton";
 import { SITE_URL, DEFAULT_OG_IMAGE, socialMetaTags } from "@/lib/seo";
 
-const TITLE = "Connect AI to KitchFlow | MCP";
-const SOCIAL_TITLE = "Connect AI to KitchFlow";
+const TITLE = "Connect AI to Your Kitchen | KitchFlow MCP";
+const SOCIAL_TITLE = "Connect ChatGPT and Claude to your KitchFlow kitchen";
 const DESCRIPTION =
-  "Connect Claude, ChatGPT, Codex, or Claude Code to KitchFlow’s public MCP server for features and kitchen ops articles.";
+  "Ask ChatGPT or Claude about your inventory, tasks, shifts, and waste. Connect with the KitchFlow MCP server and sign in with your KitchFlow account. Read-only.";
 const URL = `${SITE_URL}/connect`;
-const MCP_URL = `${SITE_URL}/mcp`;
+const MCP_URL = `${SITE_URL}/api/kitchen-mcp`;
+const PUBLIC_MCP_URL = `${SITE_URL}/mcp`;
 
 const TOOLS = [
-  {
-    name: "list_features",
-    summary: "List product features with short descriptions and page URLs.",
-    args: "None.",
-    example: "{}",
-  },
-  {
-    name: "list_blog_posts",
-    summary: "Browse published articles with title, slug, excerpt, category, and date.",
-    args: "`language` (en, fr, or ar; default en). `limit` (1–50; default 20).",
-    example: '{ "language": "en", "limit": 10 }',
-  },
-  {
-    name: "get_blog_post",
-    summary: "Read the full text of one published article by slug.",
-    args: "`slug` (required), e.g. reduce-coffee-shop-waste.",
-    example: '{ "slug": "reduce-coffee-shop-waste" }',
-  },
+  { name: "whoami", summary: "Which account and kitchen you are connected as." },
+  { name: "get_kitchen_overview", summary: "A snapshot of your kitchen: stock, tasks, and shifts." },
+  { name: "list_inventory", summary: "Inventory items with quantities and low-stock status." },
+  { name: "get_inventory_item", summary: "Full detail for one inventory item." },
+  { name: "list_tasks", summary: "Kitchen tasks, with status and assignee." },
+  { name: "get_task", summary: "Full detail for one task." },
+  { name: "list_shifts", summary: "Scheduled shifts and who is on them." },
+  { name: "list_staff", summary: "Your team members and roles." },
+  { name: "list_shopping_list", summary: "What is on your shopping list right now." },
+  { name: "list_waste_events", summary: "Logged waste events and reasons." },
+  { name: "search", summary: "Search across your kitchen data in one query." },
 ] as const;
+
+const FAQ: { q: string; a: ReactNode }[] = [
+  {
+    q: "Do I need a KitchFlow account?",
+    a: "Yes. The server only works after you sign in with your KitchFlow account and approve access. Without an account there is nothing to connect to.",
+  },
+  {
+    q: "Who can see my kitchen data?",
+    a: "Only you. Every request runs as your signed-in user, and row-level security in our database limits results to your own kitchen. Other kitchens are never visible.",
+  },
+  {
+    q: "Can the AI change anything?",
+    a: "No. All tools are read-only. Your assistant can look things up and summarize them, but it cannot edit stock, tasks, or shifts.",
+  },
+  {
+    q: "How do I disconnect?",
+    a: "Remove the KitchFlow connector in your AI app's settings. You can also sign out of KitchFlow to end the session.",
+  },
+  {
+    q: "Something broken?",
+    a: (
+      <>
+        Email{" "}
+        <a href="mailto:hello@kitchflow.app" className="text-primary hover:underline">
+          hello@kitchflow.app
+        </a>{" "}
+        with the app you used and what you asked.
+      </>
+    ),
+  },
+];
 
 export const Route = createFileRoute("/connect")({
   head: () => ({
@@ -40,7 +65,7 @@ export const Route = createFileRoute("/connect")({
       description: DESCRIPTION,
       url: URL,
       image: DEFAULT_OG_IMAGE,
-      imageAlt: "Connect AI assistants to KitchFlow",
+      imageAlt: "Connect AI assistants to your KitchFlow kitchen",
       type: "website",
     }),
     links: [{ rel: "canonical", href: URL }],
@@ -63,7 +88,7 @@ function CopyField({ value, label }: { value: string; label: string }) {
 
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-      <code className="block min-w-0 flex-1 overflow-x-auto rounded-md border border-border bg-muted/60 px-3 py-2.5 text-sm">
+      <code className="block min-w-0 flex-1 overflow-x-auto whitespace-pre rounded-xl border border-border bg-muted/60 px-3.5 py-3 text-sm">
         {value}
       </code>
       <Button
@@ -75,13 +100,13 @@ function CopyField({ value, label }: { value: string; label: string }) {
         aria-label={copied ? `${label} copied` : `Copy ${label}`}
       >
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-        {copied ? "Copied" : "Copy"}
+        <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
       </Button>
     </div>
   );
 }
 
-function StepList({ steps }: { steps: { title: string; body: string }[] }) {
+function StepList({ steps }: { steps: { title: string; body: ReactNode }[] }) {
   return (
     <ol className="space-y-5">
       {steps.map((step, index) => (
@@ -92,7 +117,7 @@ function StepList({ steps }: { steps: { title: string; body: string }[] }) {
           >
             {String(index + 1).padStart(2, "0")}
           </span>
-          <div>
+          <div className="min-w-0">
             <h3 className="text-base font-semibold tracking-tight">{step.title}</h3>
             <p className="mt-1 text-[15px] leading-relaxed text-foreground/85">{step.body}</p>
           </div>
@@ -102,156 +127,150 @@ function StepList({ steps }: { steps: { title: string; body: string }[] }) {
   );
 }
 
+function SectionHeading({ children }: { children: ReactNode }) {
+  return (
+    <h2 className="mb-5 font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight sm:text-2xl">
+      {children}
+    </h2>
+  );
+}
+
 function ConnectPage() {
   const chatgptSteps = [
     {
-      title: "Open Plugins",
-      body: "In ChatGPT on the web, open Plugins, select +, then Add custom MCP server. Your account or workspace must allow custom MCP connections.",
+      title: "Turn on developer mode",
+      body: "In ChatGPT on the web, open Settings → Apps & Connectors → Advanced settings and enable developer mode. Your plan or workspace must allow custom MCP connectors.",
     },
     {
-      title: "Add KitchFlow",
-      body: "Name it KitchFlow, paste the server URL below, and choose No authentication. Acknowledge the connection warning.",
+      title: "Add KitchFlow as a connector",
+      body: "Back in Apps & Connectors, create a new connector. Name it KitchFlow, paste the server URL above, and choose OAuth for authentication.",
     },
     {
-      title: "Install and use",
-      body: "Create the plugin, install it, then type @KitchFlow in a new chat and ask about features or kitchen ops articles.",
+      title: "Sign in and approve",
+      body: "ChatGPT opens KitchFlow. Sign in with your KitchFlow account, then approve access on the consent screen.",
+    },
+    {
+      title: "Ask about your kitchen",
+      body: "In a new chat, enable the KitchFlow connector and try “What is low on stock today?”",
     },
   ];
 
-  const codexCommands = `codex mcp add kitchflow --url ${MCP_URL}`;
+  const claudeSteps = [
+    {
+      title: "Add a custom connector",
+      body: "In Claude, open Settings → Connectors and add a custom connector. Paste the server URL above. Team and Enterprise workspaces may need an owner to enable custom connectors first.",
+    },
+    {
+      title: "Sign in and approve",
+      body: "Claude sends you to KitchFlow. Sign in with your KitchFlow account and approve access on the consent screen.",
+    },
+    {
+      title: "Ask about your kitchen",
+      body: "Enable the connector in a chat and ask about inventory, tomorrow’s shifts, or recent waste.",
+    },
+  ];
 
-  const claudeCodeSnippet = `{
-  "mcpServers": {
-    "kitchflow": {
-      "type": "http",
-      "url": "${MCP_URL}"
-    }
-  }
-}`;
+  const claudeCodeCommand = `claude mcp add --transport http kitchflow ${MCP_URL}`;
+  const codexCommand = `codex mcp add kitchflow --url ${MCP_URL}`;
 
   return (
     <section className="py-16 lg:py-24">
       <article className="mx-auto max-w-2xl px-5 lg:px-8">
-        <p className="mb-4 text-sm font-semibold uppercase text-primary">MCP</p>
+        <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-primary">
+          Connect AI
+        </p>
         <h1 className="mb-5 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight sm:text-4xl">
-          Connect AI to KitchFlow
+          Ask your AI about your kitchen
         </h1>
         <p className="text-lg leading-relaxed text-foreground/85">
-          Point Claude, ChatGPT, Codex, or Claude Code at our public MCP server. It can list
-          product features and read published kitchen ops articles. No account sign-in is required
-          for these tools.
+          Connect ChatGPT or Claude to KitchFlow and ask in plain language: what is running low,
+          who is on tomorrow, what got wasted this week. Your assistant reads your live kitchen
+          data and answers from it.
         </p>
 
-        <div className="mt-10 space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            MCP server URL
+        <div className="mt-10 rounded-2xl border border-border bg-card p-5 shadow-soft sm:p-6">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            KitchFlow MCP server URL
           </h2>
           <CopyField value={MCP_URL} label="MCP server URL" />
-          <p className="text-sm text-muted-foreground">
-            Public read-only tools. Kitchen account data is not exposed here.
-          </p>
+          <div className="mt-4 flex gap-3 text-sm leading-relaxed text-muted-foreground">
+            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+            <p>
+              Sign in with OAuth. You log in with your KitchFlow account on the login page, then
+              approve access on a consent screen. Read-only, and limited to your own kitchen.
+            </p>
+          </div>
         </div>
 
-        <div className="mt-14 space-y-10">
+        <div className="mt-14 space-y-12">
           <section>
-            <h2 className="mb-5 font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight">
-              Connect with ChatGPT
-            </h2>
+            <SectionHeading>Connect with ChatGPT</SectionHeading>
             <StepList steps={chatgptSteps} />
             <p className="mt-5 text-sm text-muted-foreground">
-              Using the older Apps interface? Open Settings → Apps → Create, enter the same URL, pick
-              No authentication, then Scan Tools. Availability depends on your plan and workspace
-              settings.
+              Menu names change as ChatGPT updates. If you do not see custom connectors, check your
+              plan and workspace settings.
             </p>
           </section>
 
           <section>
-            <h2 className="mb-5 font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight">
-              Connect with Codex
-            </h2>
-            <StepList
-              steps={[
-                {
-                  title: "Register the server",
-                  body: "Run the command below in your terminal to add KitchFlow to Codex.",
-                },
-                {
-                  title: "Ask about the product",
-                  body: "Start a new Codex session and ask for KitchFlow features or a blog article on waste, inventory, or staffing.",
-                },
-              ]}
-            />
-            <div className="mt-5 space-y-2">
-              <p className="text-sm font-medium">Run in your terminal</p>
-              <CopyField value={codexCommands} label="Codex command" />
-            </div>
+            <SectionHeading>Connect with Claude</SectionHeading>
+            <StepList steps={claudeSteps} />
           </section>
 
           <section>
-            <h2 className="mb-5 font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight">
-              Connect with Claude Code
-            </h2>
+            <SectionHeading>Claude Code and Codex</SectionHeading>
             <p className="mb-4 text-[15px] leading-relaxed text-foreground/85">
-              Add a remote HTTP server to your Claude Code MCP config, then restart the session.
+              Register the server from your terminal. Your client opens a browser for the same
+              KitchFlow sign-in and approval.
             </p>
-            <CopyField value={claudeCodeSnippet} label="Claude Code config" />
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-sm font-medium">Claude Code</p>
+                <CopyField value={claudeCodeCommand} label="Claude Code command" />
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium">Codex</p>
+                <CopyField value={codexCommand} label="Codex command" />
+              </div>
+            </div>
           </section>
         </div>
 
         <section className="mt-14">
-          <h2 className="mb-3 font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight">
-            Tools
-          </h2>
-          <p className="mb-8 text-[15px] leading-relaxed text-foreground/85">
-            Each tool returns structured JSON your assistant can cite. Content mirrors what is
-            already public on the website.
+          <SectionHeading>What your assistant can read</SectionHeading>
+          <p className="mb-6 text-[15px] leading-relaxed text-foreground/85">
+            Eleven read-only tools. None of them can change your data.
           </p>
-          <div className="space-y-8">
+          <ul className="divide-y divide-border rounded-2xl border border-border">
             {TOOLS.map((tool) => (
-              <div key={tool.name}>
-                <h3 className="font-mono text-base font-semibold">{tool.name}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">{tool.summary}</p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground/70">Arguments. </span>
-                  {tool.args}
-                </p>
-                <pre className="mt-3 overflow-x-auto rounded-md border border-border bg-muted/60 p-3 text-sm">
-                  <code>{tool.example}</code>
-                </pre>
-              </div>
+              <li
+                key={tool.name}
+                className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-baseline sm:gap-4"
+              >
+                <code className="shrink-0 font-mono text-sm font-semibold sm:w-52">{tool.name}</code>
+                <span className="text-[15px] leading-relaxed text-foreground/85">
+                  {tool.summary}
+                </span>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
 
         <section className="mt-14 space-y-6 border-t border-border pt-10">
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight">
-            FAQ
-          </h2>
-          <div>
-            <h3 className="text-base font-semibold">Do I need a KitchFlow account?</h3>
-            <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
-              Not for this server. Features and blog tools are public. Signed-in kitchen data is not
-              available over MCP yet.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-base font-semibold">Which apps work?</h3>
-            <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
-              Any client that speaks MCP over HTTPS, including ChatGPT custom MCP plugins, Codex,
-              Claude Code, and Cursor. Workspace policies may block custom servers.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-base font-semibold">Something broken?</h3>
-            <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
-              Email{" "}
-              <a href="mailto:hello@kitchflow.app" className="text-primary hover:underline">
-                hello@kitchflow.app
-              </a>{" "}
-              with the client you used and what you asked for.
-            </p>
-          </div>
+          <SectionHeading>FAQ</SectionHeading>
+          {FAQ.map((item) => (
+            <div key={item.q}>
+              <h3 className="text-base font-semibold">{item.q}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">{item.a}</p>
+            </div>
+          ))}
         </section>
+
+        <p className="mt-10 text-sm text-muted-foreground">
+          Looking for our blog and feature list instead? A separate public website server lives at{" "}
+          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{PUBLIC_MCP_URL}</code>. It has
+          no kitchen data and needs no sign-in.
+        </p>
       </article>
     </section>
   );
