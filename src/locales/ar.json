@@ -6,6 +6,7 @@
     "blog": "المدونة",
     "home": "الرئيسية",
     "contact": "تواصل",
+    "demo": "تجربة",
     "download": "حمّل من App Store",
     "viewAllFeatures": "عرض كل المميزات",
     "primaryLabel": "التنقل الرئيسي",
@@ -17,7 +18,7 @@
     "title": "أدر مطبخك. ليس فقط قائمتك.",
     "subtitle": "KitchFlow يمنح مدراء المطاعم وفرق المطابخ تطبيقاً واحداً قوياً لإدارة المخزون والموظفين والمهام والهدر والموردين.",
     "ctaPrimary": "حمّل من App Store",
-    "ctaSecondary": "شاهد كيف يعمل",
+    "ctaSecondary": "جرّب العرض التفاعلي",
     "social": "متاح الآن على App Store لـ iPhone"
   },
   "problem": {
@@ -88,7 +89,8 @@
   "download": {
     "title": "حمّل KitchFlow اليوم",
     "subtitle": "أدر مطبخك بذكاء — مباشرة من هاتفك.",
-    "cta": "حمّل من App Store"
+    "cta": "حمّل من App Store",
+    "ctaDemo": "جرّب العرض التفاعلي"
   },
   "footer": {
     "tagline": "منصة العمليات الشاملة للمطابخ",

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/KFButton";
-import { APP_STORE_URL } from "@/lib/seo";
+import { APP_STORE_URL, DASHBOARD_DEMO_URL } from "@/lib/seo";
 
 export function DownloadCTA() {
   const { t } = useTranslation();
@@ -19,6 +19,12 @@ export function DownloadCTA() {
           <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
             <Button size="lg" className="w-full sm:w-auto group">
               {t("download.cta")}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl-flip" />
+            </Button>
+          </a>
+          <a href={DASHBOARD_DEMO_URL}>
+            <Button variant="outline" size="lg" className="w-full sm:w-auto group">
+              {t("download.ctaDemo")}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl-flip" />
             </Button>
           </a>

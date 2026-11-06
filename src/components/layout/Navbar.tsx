@@ -21,7 +21,7 @@ import {
   isBlogHubPath,
   isBlogPostPath,
 } from "@/lib/locale-path";
-import { APP_STORE_URL } from "@/lib/seo";
+import { APP_STORE_URL, DASHBOARD_DEMO_URL } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -153,6 +153,12 @@ export function Navbar() {
               </div>
             </div>
             {navLink("/about", t("nav.about"))}
+            <a
+              href={DASHBOARD_DEMO_URL}
+              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+            >
+              {t("nav.demo")}
+            </a>
             <Link
               to="/"
               hash="faq"
@@ -219,6 +225,9 @@ export function Navbar() {
           <Link to="/about" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.about")}
           </Link>
+          <a href={DASHBOARD_DEMO_URL} className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
+            {t("nav.demo")}
+          </a>
           <Link to="/" hash="faq" className="rounded-md px-2 py-2 text-base font-medium hover:bg-muted">
             {t("nav.faq")}
           </Link>

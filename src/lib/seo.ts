@@ -9,6 +9,8 @@ export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
 export const APP_STORE_ID = "6762667252";
 export const APP_STORE_URL = `https://apps.apple.com/us/app/kitchflow-kitchen-ops/id${APP_STORE_ID}`;
+export const DASHBOARD_URL = "https://dashboard.kitchflowapp.com";
+export const DASHBOARD_DEMO_URL = `${DASHBOARD_URL}/demo`;
 
 export const absoluteUrl = (path: string) => {
   if (!path) return SITE_URL;

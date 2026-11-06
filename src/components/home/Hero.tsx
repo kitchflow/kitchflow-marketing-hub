@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/KFButton";
 import { PhoneMockup } from "@/components/ui/PhoneMockup";
-import { APP_STORE_URL } from "@/lib/seo";
+import { APP_STORE_URL, DASHBOARD_DEMO_URL } from "@/lib/seo";
 import appHomeScreenshot from "@/assets/app-home-screenshot.png";
 
 export function Hero() {
@@ -57,7 +57,7 @@ export function Hero() {
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl-flip" />
                 </Button>
               </a>
-              <a href="#how">
+              <a href={DASHBOARD_DEMO_URL}>
                 <Button variant="ghost" size="lg" className="w-full sm:w-auto group">
                   {t("hero.ctaSecondary")}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl-flip" />

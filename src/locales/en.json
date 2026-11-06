@@ -6,6 +6,7 @@
     "blog": "Blog",
     "home": "Home",
     "contact": "Contact",
+    "demo": "Demo",
     "download": "Download on the App Store",
     "viewAllFeatures": "View all features",
     "primaryLabel": "Primary navigation",
@@ -17,7 +18,7 @@
     "title": "Run Your Kitchen. Not Just Your Menu.",
     "subtitle": "KitchFlow gives restaurant managers and kitchen teams one powerful app to manage inventory, staff, tasks, waste, and suppliers — all in one place.",
     "ctaPrimary": "Download on the App Store",
-    "ctaSecondary": "See How It Works",
+    "ctaSecondary": "Try the live demo",
     "social": "Available now on the App Store for iPhone"
   },
   "problem": {
@@ -88,7 +89,8 @@
   "download": {
     "title": "Download KitchFlow today",
     "subtitle": "Start running your kitchen smarter — right from your phone.",
-    "cta": "Download on the App Store"
+    "cta": "Download on the App Store",
+    "ctaDemo": "Try the live demo"
   },
   "footer": {
     "tagline": "The all-in-one kitchen operations platform",
