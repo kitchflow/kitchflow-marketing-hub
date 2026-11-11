@@ -3,7 +3,7 @@ import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Mail, Instagram, Linkedin, Twitter, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/KFButton";
 import { submitContactMessage } from "@/lib/forms.functions";
 import { SITE_URL, DEFAULT_OG_IMAGE, socialMetaTags } from "@/lib/seo";
@@ -115,24 +115,6 @@ function ContactPage() {
                   <Mail className="h-5 w-5 text-muted-foreground" />
                   partnerships@kitchflow.app
                 </a>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                  Social
-                </h3>
-                <div className="flex gap-3">
-                  {[Instagram, Linkedin, Twitter].map((Icon, i) => (
-                    <a
-                      key={i}
-                      href="#"
-                      className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:border-foreground/40 hover:bg-muted transition"
-                      aria-label="social"
-                    >
-                      <Icon className="h-6 w-6" />
-                    </a>
-                  ))}
-                </div>
               </div>
 
               <div>

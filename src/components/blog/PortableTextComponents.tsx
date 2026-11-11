@@ -63,7 +63,7 @@ export const portableTextComponents: PortableTextComponents = {
       return (
         <img
           src={url}
-          alt=""
+          alt={value.alt?.trim() || value.caption?.trim() || value.asset?.altText?.trim() || ""}
           loading="lazy"
           className="my-8 rounded-2xl border border-border w-full"
         />

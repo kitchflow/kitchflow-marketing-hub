@@ -17,7 +17,7 @@ const fullNames: Record<Lang, string> = {
 function destinationForLang(
   lang: Lang,
   pathname: string,
-  findSlugForLanguage?: (lang: Lang) => string | null,
+  findSlugForLanguage?: (lang: Lang) => string | null | undefined,
 ): string | null {
   if (isBlogPostPath(pathname) && findSlugForLanguage) {
     const slug = findSlugForLanguage(lang);

@@ -1,5 +1,4 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Instagram, Linkedin, Twitter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/ui/Logo";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
@@ -60,13 +59,6 @@ export function Footer() {
 
           <div>
             <h4 className="text-sm font-semibold mb-4">{t("footer.connect")}</h4>
-            <div className="flex gap-3 mb-5">
-              {[Instagram, Linkedin, Twitter].map((Icon, i) => (
-                <a key={i} href="#" aria-label="social" className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border hover:border-foreground/40 hover:bg-muted transition-all">
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
             <LanguageSwitcher dropUp />
           </div>
         </div>

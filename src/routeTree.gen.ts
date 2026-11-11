@@ -9,44 +9,73 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as RestaurantSupplierManagementRouteImport } from './routes/restaurant-supplier-management'
-import { Route as RestaurantStaffSchedulingRouteImport } from './routes/restaurant-staff-scheduling'
-import { Route as RestaurantInventoryManagementRouteImport } from './routes/restaurant-inventory-management'
-import { Route as RestaurantFoodWasteManagementRouteImport } from './routes/restaurant-food-waste-management'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as KitchenTaskManagementRouteImport } from './routes/kitchen-task-management'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ConnectRouteImport } from './routes/connect'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as OauthConsentRouteImport } from './routes/oauth.consent'
-import { Route as BlogFeedDotxmlRouteImport } from './routes/blog.feed[.]xml'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ConnectRouteImport } from './routes/connect'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as KitchenTaskManagementRouteImport } from './routes/kitchen-task-management'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RestaurantFoodWasteManagementRouteImport } from './routes/restaurant-food-waste-management'
+import { Route as RestaurantInventoryManagementRouteImport } from './routes/restaurant-inventory-management'
+import { Route as RestaurantStaffSchedulingRouteImport } from './routes/restaurant-staff-scheduling'
+import { Route as RestaurantSupplierManagementRouteImport } from './routes/restaurant-supplier-management'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as FrBlogIndexRouteImport } from './routes/fr.blog.index'
-import { Route as ArBlogIndexRouteImport } from './routes/ar.blog.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as BlogFeedDotxmlRouteImport } from './routes/blog.feed[.]xml'
+import { Route as OauthConsentRouteImport } from './routes/oauth.consent'
 import { Route as ApiKitchenMcpIndexRouteImport } from './routes/api.kitchen-mcp.index'
 import { Route as ApiKitchenMcpSplatRouteImport } from './routes/api.kitchen-mcp.$'
+import { Route as ArBlogIndexRouteImport } from './routes/ar.blog.index'
+import { Route as FrBlogIndexRouteImport } from './routes/fr.blog.index'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RestaurantSupplierManagementRoute =
-  RestaurantSupplierManagementRouteImport.update({
-    id: '/restaurant-supplier-management',
-    path: '/restaurant-supplier-management',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const RestaurantStaffSchedulingRoute =
-  RestaurantStaffSchedulingRouteImport.update({
-    id: '/restaurant-staff-scheduling',
-    path: '/restaurant-staff-scheduling',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnectRoute = ConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KitchenTaskManagementRoute = KitchenTaskManagementRouteImport.update({
+  id: '/kitchen-task-management',
+  path: '/kitchen-task-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RestaurantFoodWasteManagementRoute =
+  RestaurantFoodWasteManagementRouteImport.update({
+    id: '/restaurant-food-waste-management',
+    path: '/restaurant-food-waste-management',
     getParentRoute: () => rootRouteImport,
   } as any)
 const RestaurantInventoryManagementRoute =
@@ -55,70 +84,21 @@ const RestaurantInventoryManagementRoute =
     path: '/restaurant-inventory-management',
     getParentRoute: () => rootRouteImport,
   } as any)
-const RestaurantFoodWasteManagementRoute =
-  RestaurantFoodWasteManagementRouteImport.update({
-    id: '/restaurant-food-waste-management',
-    path: '/restaurant-food-waste-management',
+const RestaurantStaffSchedulingRoute =
+  RestaurantStaffSchedulingRouteImport.update({
+    id: '/restaurant-staff-scheduling',
+    path: '/restaurant-staff-scheduling',
     getParentRoute: () => rootRouteImport,
   } as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KitchenTaskManagementRoute = KitchenTaskManagementRouteImport.update({
-  id: '/kitchen-task-management',
-  path: '/kitchen-task-management',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConnectRoute = ConnectRouteImport.update({
-  id: '/connect',
-  path: '/connect',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OauthConsentRoute = OauthConsentRouteImport.update({
-  id: '/oauth/consent',
-  path: '/oauth/consent',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogFeedDotxmlRoute = BlogFeedDotxmlRouteImport.update({
-  id: '/blog/feed.xml',
-  path: '/blog/feed.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
+const RestaurantSupplierManagementRoute =
+  RestaurantSupplierManagementRouteImport.update({
+    id: '/restaurant-supplier-management',
+    path: '/restaurant-supplier-management',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
@@ -127,14 +107,24 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
-const FrBlogIndexRoute = FrBlogIndexRouteImport.update({
-  id: '/fr/blog/',
-  path: '/fr/blog/',
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArBlogIndexRoute = ArBlogIndexRouteImport.update({
-  id: '/ar/blog/',
-  path: '/ar/blog/',
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogFeedDotxmlRoute = BlogFeedDotxmlRouteImport.update({
+  id: '/blog/feed.xml',
+  path: '/blog/feed.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OauthConsentRoute = OauthConsentRouteImport.update({
+  id: '/oauth/consent',
+  path: '/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiKitchenMcpIndexRoute = ApiKitchenMcpIndexRouteImport.update({
@@ -145,6 +135,16 @@ const ApiKitchenMcpIndexRoute = ApiKitchenMcpIndexRouteImport.update({
 const ApiKitchenMcpSplatRoute = ApiKitchenMcpSplatRouteImport.update({
   id: '/api/kitchen-mcp/$',
   path: '/api/kitchen-mcp/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArBlogIndexRoute = ArBlogIndexRouteImport.update({
+  id: '/ar/blog/',
+  path: '/ar/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrBlogIndexRoute = FrBlogIndexRouteImport.update({
+  id: '/fr/blog/',
+  path: '/fr/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -323,81 +323,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/restaurant-supplier-management': {
-      id: '/restaurant-supplier-management'
-      path: '/restaurant-supplier-management'
-      fullPath: '/restaurant-supplier-management'
-      preLoaderRoute: typeof RestaurantSupplierManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/restaurant-staff-scheduling': {
-      id: '/restaurant-staff-scheduling'
-      path: '/restaurant-staff-scheduling'
-      fullPath: '/restaurant-staff-scheduling'
-      preLoaderRoute: typeof RestaurantStaffSchedulingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/restaurant-inventory-management': {
-      id: '/restaurant-inventory-management'
-      path: '/restaurant-inventory-management'
-      fullPath: '/restaurant-inventory-management'
-      preLoaderRoute: typeof RestaurantInventoryManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/restaurant-food-waste-management': {
-      id: '/restaurant-food-waste-management'
-      path: '/restaurant-food-waste-management'
-      fullPath: '/restaurant-food-waste-management'
-      preLoaderRoute: typeof RestaurantFoodWasteManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/kitchen-task-management': {
-      id: '/kitchen-task-management'
-      path: '/kitchen-task-management'
-      fullPath: '/kitchen-task-management'
-      preLoaderRoute: typeof KitchenTaskManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/connect': {
-      id: '/connect'
-      path: '/connect'
-      fullPath: '/connect'
-      preLoaderRoute: typeof ConnectRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -407,39 +337,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/connect': {
+      id: '/connect'
+      path: '/connect'
+      fullPath: '/connect'
+      preLoaderRoute: typeof ConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/oauth/consent': {
-      id: '/oauth/consent'
-      path: '/oauth/consent'
-      fullPath: '/oauth/consent'
-      preLoaderRoute: typeof OauthConsentRouteImport
+    '/kitchen-task-management': {
+      id: '/kitchen-task-management'
+      path: '/kitchen-task-management'
+      fullPath: '/kitchen-task-management'
+      preLoaderRoute: typeof KitchenTaskManagementRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/feed.xml': {
-      id: '/blog/feed.xml'
-      path: '/blog/feed.xml'
-      fullPath: '/blog/feed.xml'
-      preLoaderRoute: typeof BlogFeedDotxmlRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurant-food-waste-management': {
+      id: '/restaurant-food-waste-management'
+      path: '/restaurant-food-waste-management'
+      fullPath: '/restaurant-food-waste-management'
+      preLoaderRoute: typeof RestaurantFoodWasteManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurant-inventory-management': {
+      id: '/restaurant-inventory-management'
+      path: '/restaurant-inventory-management'
+      fullPath: '/restaurant-inventory-management'
+      preLoaderRoute: typeof RestaurantInventoryManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurant-staff-scheduling': {
+      id: '/restaurant-staff-scheduling'
+      path: '/restaurant-staff-scheduling'
+      fullPath: '/restaurant-staff-scheduling'
+      preLoaderRoute: typeof RestaurantStaffSchedulingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurant-supplier-management': {
+      id: '/restaurant-supplier-management'
+      path: '/restaurant-supplier-management'
+      fullPath: '/restaurant-supplier-management'
+      preLoaderRoute: typeof RestaurantSupplierManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.well-known/oauth-protected-resource': {
@@ -449,18 +421,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/fr/blog/': {
-      id: '/fr/blog/'
-      path: '/fr/blog'
-      fullPath: '/fr/blog/'
-      preLoaderRoute: typeof FrBlogIndexRouteImport
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ar/blog/': {
-      id: '/ar/blog/'
-      path: '/ar/blog'
-      fullPath: '/ar/blog/'
-      preLoaderRoute: typeof ArBlogIndexRouteImport
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/feed.xml': {
+      id: '/blog/feed.xml'
+      path: '/blog/feed.xml'
+      fullPath: '/blog/feed.xml'
+      preLoaderRoute: typeof BlogFeedDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oauth/consent': {
+      id: '/oauth/consent'
+      path: '/oauth/consent'
+      fullPath: '/oauth/consent'
+      preLoaderRoute: typeof OauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/kitchen-mcp/': {
@@ -475,6 +461,20 @@ declare module '@tanstack/react-router' {
       path: '/api/kitchen-mcp/$'
       fullPath: '/api/kitchen-mcp/$'
       preLoaderRoute: typeof ApiKitchenMcpSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/blog/': {
+      id: '/ar/blog/'
+      path: '/ar/blog'
+      fullPath: '/ar/blog/'
+      preLoaderRoute: typeof ArBlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fr/blog/': {
+      id: '/fr/blog/'
+      path: '/fr/blog'
+      fullPath: '/fr/blog/'
+      preLoaderRoute: typeof FrBlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
